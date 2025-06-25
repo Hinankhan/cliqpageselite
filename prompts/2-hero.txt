@@ -1,50 +1,108 @@
-Generate ONLY the HERO SECTION content for {companyName}.
+Generate ONLY the HERO SECTION content for {companyName} - create an ELITE, WORLD-CLASS hero section that rivals the best SaaS companies like Stripe, Linear, and Notion.
 
-SECTION STRUCTURE:
-- Sticky navigation header with company name "{companyName}" and smooth scroll links
-- MOBILE RESPONSIVE NAVIGATION:
-  - Desktop: Show navigation links horizontally
-  - Mobile: Show hamburger menu button (☰) that toggles vertical menu
-  - Mobile menu should slide down/fade in when opened
-  - Mobile menu items should be stacked vertically with proper spacing
-- Navigation links MUST use these exact href values to match section IDs:
-  - href="#problem" (for Problem/Challenge)
-  - href="#how-it-works" (for How It Works)
-  - href="#features" (for Features)
-  - href="#product-showcase" (for Product Showcase)
-  - href="#value-props" (for Value Props)
-  - href="#pricing" (for Pricing)
-  - href="#contact" (for Contact)
-- Hero section with:
-  - Headline: Dynamic headline based on {businessDescription} and {primaryGoal}
-  - Subheading: Highlight benefits for {targetMarket} with {tone} style
-  - Primary CTA button: "{ctaPrimary}"
-  - Secondary CTA link: "{ctaSecondary}"
-  - Background: Gradient using {primaryColor} and {secondaryColor}
-  - Floating particles or subtle animations
+ELITE DESIGN REQUIREMENTS:
+Create a sophisticated, modern hero section with:
 
-CONTACT INFO:
-- Email: {businessEmail}
-- Phone: {phoneNumber}
+🎨 VISUAL EXCELLENCE:
+- Stunning gradient backgrounds with multiple color stops
+- Floating geometric elements (circles, squares, lines) with subtle animations
+- Glass-morphism cards with backdrop blur effects
+- Particle animations or subtle background movement
+- Modern iconography and visual hierarchy
+- Professional color harmony and contrast
 
-MOBILE NAVIGATION REQUIREMENTS:
-- Hamburger button: visible on mobile (md:hidden), hidden on desktop
-- Desktop menu: hidden on mobile (hidden md:flex), visible on desktop
-- Mobile menu: data-mobile-menu attribute for JavaScript targeting
-- Mobile menu should be hidden by default (add 'hidden' class)
-- Use responsive Tailwind classes (sm:, md:, lg:, xl:)
+⚡ ADVANCED ANIMATIONS:
+- Fade-in animations for text elements (staggered timing)
+- Floating/bounce animations for visual elements
+- Smooth hover effects on interactive elements
+- Parallax-style background movement
+- Gradient shifts and color transitions
+- Micro-interactions on buttons and links
 
-STYLING REQUIREMENTS:
-- Use Tailwind CSS classes exclusively
-- Primary color: {primaryColor} (use as text-[{primaryColor}], bg-[{primaryColor}])
-- Secondary color: {secondaryColor} (use as text-[{secondaryColor}], bg-[{secondaryColor}])
-- Tone: {tone}
-- Style: {designStyle}
+🏗️ NAVIGATION STRUCTURE:
+MOBILE RESPONSIVE NAVIGATION:
+- Company name "{companyName}" with modern logo styling
+- Desktop: Horizontal navigation with hover effects and smooth underlines
+- Mobile: Elegant hamburger menu (☰) with smooth slide-down animation
+- Glass-morphism navigation bar with backdrop blur
+- Sticky header with background blur on scroll
+- Professional spacing and typography
 
-NAVIGATION FUNCTIONALITY:
-- Ensure all navigation anchor tags use exact href values for new sections
-- Add smooth scroll behavior for navigation links
-- Mobile hamburger menu with proper toggle functionality
-- Responsive design that works on all screen sizes
+Navigation links MUST use these exact href values:
+- href="#problem" (Problem/Challenge)
+- href="#how-it-works" (How It Works) 
+- href="#features" (Features)
+- href="#product-showcase" (Product Showcase)
+- href="#value-props" (Value Props)
+- href="#pricing" (Pricing)
+- href="#contact" (Contact)
 
-Output only the <header> and <section> tags for the hero. No DOCTYPE, no head, no body tags. Use consistent Tailwind classes. 
+🎯 HERO CONTENT STRUCTURE:
+1. HEADLINE: 
+   - Large, bold, attention-grabbing headline based on {businessDescription}
+   - Use gradient text effects with {primaryColor} and {secondaryColor}
+   - Split into multiple lines for visual hierarchy
+   - Add emphasis words with different styling
+
+2. SUBHEADING:
+   - Clear value proposition for {targetMarket}
+   - Professional tone matching {tone}
+   - Use subtle animations and proper spacing
+
+3. CALL-TO-ACTION SECTION:
+   - Primary CTA: "{ctaPrimary}" - Make it prominent with gradient backgrounds, shadows, and hover effects
+   - Secondary CTA: "{ctaSecondary}" - Subtle but elegant styling
+   - Add arrow icons, subtle animations, and professional spacing
+   - Include trust indicators (security badges, customer count, etc.)
+
+4. VISUAL ELEMENTS:
+   - Hero image/illustration area (use CSS art or placeholder for product mockup)
+   - Floating dashboard/app screenshots
+   - Abstract geometric shapes with CSS animations
+   - Background patterns with {primaryColor} and {secondaryColor}
+
+💼 PROFESSIONAL FEATURES:
+- Social proof elements (customer logos, testimonials preview)
+- Trust indicators (security, certifications)
+- Modern button designs with gradients and shadows
+- Professional typography scale
+- Perfect mobile responsiveness
+- Accessibility-friendly contrast and focus states
+
+🎨 COLOR SCHEME:
+- Primary: {primaryColor} - Use for main CTAs, accents, and gradients
+- Secondary: {secondaryColor} - Use for secondary elements and gradient combinations
+- Create sophisticated gradient combinations
+- Use opacity and transparency for depth
+- Apply consistent color psychology
+
+📱 RESPONSIVE DESIGN:
+- Mobile-first approach with perfect scaling
+- Breakpoint-specific optimizations (sm, md, lg, xl, 2xl)
+- Touch-friendly interactive elements
+- Optimized image and animation performance
+- Proper font scaling and spacing
+
+🔧 TECHNICAL REQUIREMENTS:
+- Use ONLY Tailwind CSS classes
+- Implement CSS custom properties for complex gradients
+- Add proper semantic HTML structure
+- Include accessibility attributes (aria-labels, alt text)
+- Optimize for performance (prefer CSS animations over JavaScript)
+- Contact info integration: {businessEmail}, {phoneNumber}
+
+STYLING SPECIFICATIONS:
+- Tone: {tone} - Apply consistently throughout messaging and visual style
+- Design Style: {designStyle} - Influence layout and visual approach
+- Layout Style: {layoutStyle} - Guide spatial organization
+- Design Variation: {designVariation} - Add unique creative elements
+
+OUTPUT REQUIREMENTS:
+- Generate ONLY <header> and <section> tags for the hero
+- NO DOCTYPE, html, head, or body tags
+- Use cutting-edge Tailwind CSS classes and utilities
+- Include custom CSS in <style> tags if needed for complex animations
+- Create something that would make designers envious
+- Ensure all navigation hrefs match the exact section IDs provided
+
+Make this hero section absolutely stunning - something that immediately communicates professionalism, trustworthiness, and innovation. Think Apple, Stripe, Linear-level design quality! 

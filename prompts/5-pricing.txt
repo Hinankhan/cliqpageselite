@@ -1,29 +1,104 @@
-Generate ONLY the PRICING SECTION for {companyName}.
+Generate ONLY the PRICING SECTION for {companyName} - create an ELITE, CONVERSION-OPTIMIZED pricing section that drives sales with stunning visual design and psychological persuasion.
 
-SECTION REQUIREMENTS:
-- Section MUST include id="pricing" attribute for navigation functionality
-- Section title: "Simple Pricing" or similar
-- 2-3 pricing tiers with:
-  - Plan names relevant to {businessDescription}
-  - Monthly/Yearly toggle functionality
-  - Feature lists highlighting {primaryGoal} benefits
-  - CTA buttons: "{ctaPrimary}"
-  - Popular plan highlighted with {primaryColor}
-- Responsive grid layout (1 col mobile, 2-3 col desktop)
-- Colors: {primaryColor} and {secondaryColor} in Tailwind format
-- Tone: {tone}
-- Style: {designStyle}
-- Design variation: {layoutStyle}
+ELITE PRICING SECTION:
+Create a sophisticated, high-converting pricing section with:
 
-PRICING TOGGLE FUNCTIONALITY:
+💰 PSYCHOLOGICAL DESIGN ELEMENTS:
+- Compelling section headline with urgency/value
+- Strategic pricing tier architecture (3-tier optimal)
+- "Most Popular" badge with premium styling
+- Social proof integration (customer count, testimonials)
+- Trust badges and security indicators
+- Money-back guarantee highlighting
+
+🎨 VISUAL EXCELLENCE:
+- Glass-morphism pricing cards with depth and shadows
+- Gradient backgrounds using {primaryColor} and {secondaryColor}
+- Premium card animations and hover effects
+- Professional iconography for features
+- Visual hierarchy emphasizing best value
+- Subtle background patterns and decorative elements
+
+🃏 PRICING CARD STRUCTURE:
+Each pricing tier should include:
+
+1. PLAN HEADER:
+   - Eye-catching plan name relevant to {businessDescription}
+   - Premium badge for recommended plan
+   - Compelling tagline/subtitle
+   - Visual indicators (icons, colors)
+
+2. PRICING DISPLAY:
+   - Large, prominent price with currency
+   - Monthly/Yearly toggle with savings highlight
+   - "Save X%" indicators for yearly plans
+   - Subtle price comparison elements
+
+3. FEATURE LIST:
+   - 5-8 key features highlighting {primaryGoal} benefits
+   - Professional checkmark icons with {primaryColor}
+   - Feature descriptions targeting {targetMarket}
+   - Organized by value importance
+   - "Everything in [lower tier]" for advanced plans
+
+4. CALL-TO-ACTION:
+   - Prominent CTA button: "{ctaPrimary}"
+   - Different styling for each tier (recommended tier most prominent)
+   - Hover animations and micro-interactions
+   - "Start Free Trial" or "Get Started" messaging
+
+🏆 TIER RECOMMENDATIONS:
+- BASIC/STARTER: Entry-level with core features
+- PROFESSIONAL/POPULAR: Most features, highlighted as "Most Popular"
+- ENTERPRISE/PREMIUM: All features plus advanced capabilities
+
+🎪 ADVANCED DESIGN FEATURES:
+- Pricing toggle with smooth animations
+- Tier comparison highlights
+- Progressive feature unlocking visualization
+- Premium borders and gradients for popular plan
+- Subtle animations on scroll/hover
+- Professional spacing and alignment
+
+💎 CONVERSION OPTIMIZATION:
+- Strategic color psychology using {primaryColor} and {secondaryColor}
+- Clear value propositions for each tier
+- Benefit-focused feature descriptions
+- Urgency elements without being pushy
+- Trust signals and risk reversal
+- Clear next steps and onboarding hints
+
+📱 RESPONSIVE DESIGN:
+- Mobile: Stacked cards with easy comparison
+- Tablet: 2-column layout with proper spacing
+- Desktop: 3-column grid with perfect alignment
+- Enhanced touch targets for mobile CTA buttons
+
+🔧 TOGGLE FUNCTIONALITY:
+Monthly/Yearly pricing toggle with:
 - Toggle buttons: data-pricing-toggle="monthly" and data-pricing-toggle="yearly"
-- Monthly prices: data-price-monthly
-- Yearly prices: data-price-yearly (hidden by default)
+- Monthly prices: data-price-monthly attribute
+- Yearly prices: data-price-yearly attribute (hidden by default)
+- Smooth transition animations between pricing modes
+- Savings calculations and highlights
 
-CRITICAL RESTRICTIONS:
-- NO <style> tags - use only Tailwind classes
-- NO <script> tags - JavaScript will be handled separately
-- Use only semantic HTML with Tailwind utility classes
-- Section tag MUST include id="pricing" attribute
+🎨 STYLE INTEGRATION:
+- Tone: {tone} - Professional yet approachable messaging
+- Design Style: {designStyle} - Visual approach alignment
+- Layout Style: {layoutStyle} - Spatial organization guide
+- Design Variation: {designVariation} - Unique creative elements
 
-Output only the <section id="pricing"> tag with pricing content. Pure HTML with Tailwind classes only. 
+CRITICAL REQUIREMENTS:
+- Section MUST include id="pricing" attribute for navigation
+- NO <style> tags - use only advanced Tailwind CSS classes
+- NO <script> tags - pure CSS animations and data attributes
+- Use semantic HTML with cutting-edge Tailwind utilities
+- Ensure perfect accessibility and contrast ratios
+- Mobile-first responsive design approach
+
+OUTPUT SPECIFICATIONS:
+Generate ONLY the <section id="pricing"> tag with pricing content.
+Create a pricing section that converts visitors into customers with elite design and psychological persuasion.
+Make it feel premium, trustworthy, and compelling - worthy of top SaaS companies.
+
+This should be a pricing section that makes people excited to purchase! 

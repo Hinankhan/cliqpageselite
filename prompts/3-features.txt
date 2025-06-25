@@ -1,22 +1,89 @@
-Generate ONLY the FEATURES SECTION for {companyName}.
+Generate ONLY the FEATURES SECTION for {companyName} - create an ELITE, VISUALLY STUNNING features section that showcases capabilities with modern design excellence.
 
-SECTION REQUIREMENTS:
-- Section MUST include id="features" attribute for navigation functionality
-- Section title highlighting {primaryGoal} benefits
-- 3-4 feature cards with:
-  - Icons (SVG or Tailwind CSS generated)
-  - Feature titles related to {businessDescription}
-  - Benefits descriptions targeting {targetMarket}
-- Grid layout: responsive (1 col mobile, 3-4 col desktop)
-- Colors: {primaryColor} and {secondaryColor} in Tailwind format
-- Tone: {tone}
-- Style variation: {designStyle}
-- Layout variation: {layoutStyle}
+ELITE FEATURES DESIGN:
+Create a sophisticated, engaging features section with:
 
-CRITICAL RESTRICTIONS:
-- NO <style> tags - use only Tailwind classes
-- NO <script> tags - JavaScript will be handled separately
-- Use only semantic HTML with Tailwind utility classes
+🎯 SECTION STRUCTURE:
+- Section MUST include id="features" attribute for navigation
+- Compelling section headline focused on {primaryGoal} benefits
+- Professional subtitle targeting {targetMarket}
+- 3-6 feature cards with modern card design
+
+💎 VISUAL EXCELLENCE:
+- Glass-morphism feature cards with subtle shadows and backdrop blur
+- Gradient backgrounds and borders using {primaryColor} and {secondaryColor}
+- Modern iconography (use heroicons SVG or sophisticated CSS icons)
+- Smooth hover animations and transitions
+- Staggered reveal animations (CSS-based)
+- Professional spacing and visual hierarchy
+
+🎨 FEATURE CARD DESIGN:
+Each feature card should include:
+1. MODERN ICON:
+   - Large, professional SVG icons or CSS-generated icons
+   - Use {primaryColor} for icon colors
+   - Subtle glow or gradient effects
+   - Icon background with soft colors
+
+2. COMPELLING TITLE:
+   - Bold, clear feature names related to {businessDescription}
+   - Gradient text effects where appropriate
+   - Perfect typography scaling
+
+3. BENEFIT DESCRIPTION:
+   - Clear value proposition for {targetMarket}
+   - Professional tone matching {tone}
+   - Concise but compelling copy
+   - Proper line spacing and readability
+
+4. VISUAL ENHANCEMENTS:
+   - Hover effects with subtle transformations
+   - Shadow depth changes on interaction
+   - Smooth color transitions
+   - Micro-animations for engagement
+
+🏗️ LAYOUT OPTIONS (based on {layoutStyle}):
+- Grid-based: Clean 3-column desktop, responsive mobile
+- Asymmetric: Creative staggered layout with varying card sizes
+- Centered: Focus on key features with hierarchy
+- Side-by-side: Alternating image/text combinations
+
+🎪 ADVANCED DESIGN FEATURES:
+- Background patterns or subtle geometric shapes
+- Section dividers with gradient lines
+- Interactive elements (hover states, subtle animations)
+- Modern borders and card treatments
+- Professional color gradients and overlays
+
+📱 RESPONSIVE DESIGN:
+- Mobile: Single column with proper spacing
+- Tablet: 2-column grid with appropriate gaps
+- Desktop: 3-4 column layout with perfect alignment
+- Large screens: Enhanced spacing and larger elements
+
+🎨 COLOR INTEGRATION:
+- Primary Color: {primaryColor} - Main accents, icons, hover states
+- Secondary Color: {secondaryColor} - Backgrounds, borders, secondary elements
+- Create sophisticated color combinations
+- Use opacity and gradients for depth
+
+🔧 TECHNICAL SPECIFICATIONS:
+- Tone: {tone} - Consistent messaging style
+- Design Style: {designStyle} - Visual approach influence
+- Layout Style: {layoutStyle} - Spatial organization guide
+- Design Variation: {designVariation} - Unique creative elements
+
+CRITICAL REQUIREMENTS:
+- NO <style> tags - use only Tailwind CSS classes
+- NO <script> tags - pure CSS animations only
+- Use semantic HTML with advanced Tailwind utilities
 - Section tag MUST include id="features" attribute
+- Ensure perfect accessibility (proper contrast, focus states)
+- Optimize for performance (CSS transforms over position changes)
 
-Output only the <section id="features"> tag with features content. Pure HTML with Tailwind classes only. 
+OUTPUT SPECIFICATIONS:
+Generate ONLY the <section id="features"> tag with features content.
+Create something that feels premium, modern, and professional - worthy of top-tier SaaS companies.
+Use cutting-edge Tailwind CSS techniques and make each feature card visually compelling.
+
+Make this features section absolutely gorgeous and engaging! 
