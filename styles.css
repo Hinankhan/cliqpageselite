@@ -1,40 +1,209 @@
-/* Custom styles for CliqPages Elite */
+/* CliqPages Elite - Enhanced Styles */
+
+/* Essential Utility Classes */
 .hidden {
     display: none !important;
 }
 
-/* Form styling enhancements */
-.form-container {
-    max-width: 1200px;
-    margin: 0 auto;
+/* Enhanced Toast Notifications */
+.toast-container {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    z-index: 9999;
+    max-width: 24rem;
 }
 
-/* Progress bar animations */
-.progress-bar {
-    transition: width 0.3s ease-in-out;
+.toast {
+    margin-bottom: 0.5rem;
+    padding: 1rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    animation: slideInRight 0.3s ease-out;
 }
 
-/* Button hover effects */
-.btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+.toast-error {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.95), rgba(220, 38, 38, 0.95));
+    color: white;
 }
 
-.btn-secondary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+.toast-success {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.95), rgba(5, 150, 105, 0.95));
+    color: white;
 }
 
-/* Loading spinner */
+.toast-warning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.95), rgba(217, 119, 6, 0.95));
+    color: white;
+}
+
+/* Loading Spinner for Generate Button */
 .spinner {
-    border: 2px solid #f3f3f3;
-    border-top: 2px solid #3498db;
-    border-radius: 50%;
     width: 20px;
     height: 20px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top: 2px solid white;
+    border-radius: 50%;
     animation: spin 1s linear infinite;
     display: inline-block;
     margin-right: 8px;
+}
+
+/* Enhanced Button States */
+.btn-generating {
+    opacity: 0.8;
+    cursor: not-allowed;
+    transform: none !important;
+}
+
+.btn-generating:hover {
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Progress Bar Enhancements */
+.progress-shimmer {
+    position: relative;
+    overflow: hidden;
+}
+
+.progress-shimmer::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    animation: shimmer 2s infinite;
+}
+
+/* Form Validation Enhancements */
+.field-error {
+    animation: shake 0.5s ease-in-out;
+}
+
+.field-success {
+    position: relative;
+}
+
+.field-success::after {
+    content: '✓';
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #10b981;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* Radio Button Custom Styling */
+.radio-card {
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.radio-card:hover {
+    background-color: rgba(99, 102, 241, 0.05);
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.radio-card.selected {
+    background-color: rgba(99, 102, 241, 0.1);
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+/* Color Picker Enhancement */
+.color-input-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem;
+    border: 1px solid #d1d5db;
+    border-radius: 0.75rem;
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.color-input-group:focus-within {
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.color-preview {
+    width: 3rem;
+    height: 3rem;
+    border-radius: 0.5rem;
+    border: 2px solid #e5e7eb;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.color-preview:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Scroll Animation Classes */
+.fade-in-up {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+}
+
+.fade-in-up.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Responsive Enhancements */
+@media (max-width: 768px) {
+    .toast-container {
+        left: 1rem;
+        right: 1rem;
+        max-width: none;
+    }
+    
+    .glass-effect {
+        margin: 0 0.5rem;
+        padding: 1.5rem !important;
+    }
+    
+    .color-input-group {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .color-preview {
+        width: 100%;
+        height: 3rem;
+    }
+}
+
+@media (max-width: 640px) {
+    .gradient-bg {
+        background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
+    }
+    
+    .floating-elements {
+        display: none; /* Hide floating elements on mobile for performance */
+    }
+}
+
+/* Animations */
+@keyframes slideInRight {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
 }
 
 @keyframes spin {
@@ -42,51 +211,42 @@
     100% { transform: rotate(360deg); }
 }
 
-/* Error message styling */
-.error-message {
-    background-color: #fee2e2;
-    border: 1px solid #fecaca;
-    color: #dc2626;
-    padding: 12px;
-    border-radius: 8px;
-    margin-top: 16px;
+@keyframes shimmer {
+    0% { left: -100%; }
+    100% { left: 100%; }
 }
 
-/* Success message styling */
-.success-message {
-    background-color: #d1fae5;
-    border: 1px solid #a7f3d0;
-    color: #059669;
-    padding: 12px;
-    border-radius: 8px;
-    margin-top: 16px;
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+    20%, 40%, 60%, 80% { transform: translateX(5px); }
 }
 
-/* Form field focus effects */
-input:focus, textarea:focus, select:focus {
-    outline: none;
-    ring: 2px;
-    ring-color: #3b82f6;
-    border-color: #3b82f6;
+/* Accessibility Improvements */
+@media (prefers-reduced-motion: reduce) {
+    .spinner,
+    .progress-shimmer::after,
+    .fade-in-up,
+    .toast {
+        animation: none;
+    }
+    
+    .color-preview:hover {
+        transform: none;
+    }
 }
 
-/* Responsive design */
-@media (max-width: 768px) {
-    .container {
-        padding-left: 16px;
-        padding-right: 16px;
-    }
-    
-    .grid-cols-2 {
-        grid-template-columns: 1fr;
-    }
-    
-    .flex {
-        flex-direction: column;
-    }
-    
-    .space-x-4 > * + * {
-        margin-left: 0;
-        margin-top: 16px;
+/* Focus Management */
+.focus-visible {
+    outline: 2px solid #6366f1;
+    outline-offset: 2px;
+}
+
+/* Print Styles */
+@media print {
+    .toast-container,
+    .floating-elements,
+    .progress-section {
+        display: none !important;
     }
 }
