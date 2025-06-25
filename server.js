@@ -79,8 +79,11 @@ async function sendEmailNotification(formData, result) {
 </body>
 </html>`;
 
+    // Use Resend's default domain or your verified domain
+    const fromEmail = process.env.FROM_EMAIL || 'CliqPages <onboarding@resend.dev>';
+    
     await resend.emails.send({
-      from: 'CliqPages <noreply@cliqpages.com>',
+      from: fromEmail,
       to: [formData.email],
       subject: `🎉 Your ${formData.businessName || 'Business'} Landing Page is Ready!`,
       html: emailHtml,
@@ -93,8 +96,21 @@ async function sendEmailNotification(formData, result) {
     });
 
     console.log('✅ Email sent successfully to:', formData.email);
+    console.log('📧 Email details:', {
+      from: fromEmail,
+      to: formData.email,
+      subject: `🎉 Your ${formData.businessName || 'Business'} Landing Page is Ready!`,
+      attachmentSize: result.htmlContent?.length || 0
+    });
   } catch (error) {
     console.error('❌ Email sending failed:', error);
+    console.error('📧 Email error details:', {
+      message: error.message,
+      name: error.name,
+      status: error.status || 'unknown',
+      formDataEmail: formData.email,
+      hasApiKey: !!process.env.RESEND_API_KEY
+    });
   }
 }
 
@@ -982,7 +998,7 @@ app.get('/temp/sections/:filename', (req, res) => {
   }
 });
 
-// API ENDPOINT: Serve final generated files
+// API ENDPOINT: Serve final generated files (for preview)
 app.get('/temp/final/:filename', (req, res) => {
   try {
     const filename = req.params.filename;
@@ -1004,6 +1020,37 @@ app.get('/temp/final/:filename', (req, res) => {
   } catch (error) {
     console.error('❌ Error serving final file:', error);
     res.status(500).json({ error: 'Failed to serve final file' });
+  }
+});
+
+// API ENDPOINT: Download final generated files
+app.get('/api/download/:filename', (req, res) => {
+  try {
+    const filename = req.params.filename;
+    const finalDir = path.join(__dirname, 'temp', 'final');
+    const filePath = path.join(finalDir, filename);
+    
+    // Security check - ensure file is within final directory
+    if (!filePath.startsWith(finalDir)) {
+      return res.status(400).json({ error: 'Invalid file path' });
+    }
+    
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, 'utf8');
+      
+      // Set headers for download
+      res.setHeader('Content-Type', 'text/html');
+      res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
+      res.setHeader('Content-Length', Buffer.byteLength(content, 'utf8'));
+      
+      console.log(`📥 File download: ${filename}`);
+      res.send(content);
+    } else {
+      res.status(404).json({ error: 'File not found for download' });
+    }
+  } catch (error) {
+    console.error('❌ Error downloading file:', error);
+    res.status(500).json({ error: 'Failed to download file' });
   }
 });
 
