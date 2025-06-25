@@ -272,10 +272,21 @@ class LandingPageBuilder {
 
     showProgress() {
         this.isGenerating = true;
+        
+        // Generate session ID for progress tracking
+        this.sessionId = Date.now().toString();
+        
+        // Hide form and show progress section instead
+        const formContainer = document.querySelector('form').parentElement;
+        formContainer.classList.add('hidden');
         this.progressSection.classList.remove('hidden');
         this.resultsSection.classList.add('hidden');
-        this.generateBtn.disabled = true;
-        this.generateBtnText.textContent = 'Generating...';
+        
+        // Initialize progress UI
+        this.updateProgressUI(0, 'Connecting to AI...', '🚀');
+        
+        // Start progress tracking
+        this.startProgressTracking();
         
         // Smooth scroll to progress section
         this.progressSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -287,8 +298,16 @@ class LandingPageBuilder {
     hideProgress() {
         this.isGenerating = false;
         this.progressSection.classList.add('hidden');
-        this.generateBtn.disabled = false;
-        this.generateBtnText.textContent = this.originalButtonText;
+        
+        // Show form again
+        const formContainer = document.querySelector('form').parentElement;
+        formContainer.classList.remove('hidden');
+        
+        // Close progress tracking
+        if (this.eventSource) {
+            this.eventSource.close();
+            this.eventSource = null;
+        }
     }
 
     updateProgress(percentage, text) {
@@ -296,57 +315,162 @@ class LandingPageBuilder {
         this.progressText.textContent = text;
     }
 
+    // New enhanced progress UI methods
+    updateProgressUI(percentage, message, icon = '⚡', currentSection = '') {
+        // Update progress bar
+        this.progressBar.style.width = `${percentage}%`;
+        
+        // Update percentage display
+        const progressPercentage = document.getElementById('progressPercentage');
+        if (progressPercentage) {
+            progressPercentage.textContent = `${Math.round(percentage)}%`;
+        }
+        
+        // Update main message
+        this.progressText.textContent = message;
+        
+        // Update current section
+        const currentSectionEl = document.getElementById('currentSection');
+        if (currentSectionEl && currentSection) {
+            currentSectionEl.textContent = `Currently working on: ${currentSection}`;
+        }
+        
+        // Update icon
+        const progressIcon = document.getElementById('progressIcon');
+        if (progressIcon) {
+            progressIcon.textContent = icon;
+        }
+        
+        // Add section to progress list if it's a section
+        if (currentSection && currentSection !== 'Complete') {
+            this.addSectionToProgressList(currentSection, percentage >= 100);
+        }
+    }
+
+    addSectionToProgressList(sectionName, isComplete = false) {
+        const sectionProgress = document.getElementById('sectionProgress');
+        if (!sectionProgress) return;
+        
+        // Check if section already exists
+        const existingSection = sectionProgress.querySelector(`[data-section="${sectionName}"]`);
+        if (existingSection) {
+            if (isComplete) {
+                existingSection.classList.add('completed');
+                const icon = existingSection.querySelector('.section-icon');
+                if (icon) icon.textContent = '✅';
+                const text = existingSection.querySelector('.section-text');
+                if (text) text.classList.add('line-through', 'text-green-600');
+            }
+            return;
+        }
+        
+        // Create new section item
+        const sectionItem = document.createElement('div');
+        sectionItem.className = 'flex items-center p-3 bg-white rounded-lg shadow-sm border';
+        sectionItem.setAttribute('data-section', sectionName);
+        
+        sectionItem.innerHTML = `
+            <div class="section-icon w-8 h-8 flex items-center justify-center bg-blue-100 rounded-full mr-3">
+                ${isComplete ? '✅' : '⏳'}
+            </div>
+            <div class="flex-1">
+                <div class="section-text font-medium text-gray-800 ${isComplete ? 'line-through text-green-600' : ''}">${sectionName}</div>
+                <div class="text-sm text-gray-500">${isComplete ? 'Completed' : 'In progress...'}</div>
+            </div>
+        `;
+        
+        if (isComplete) {
+            sectionItem.classList.add('completed');
+        }
+        
+        sectionProgress.appendChild(sectionItem);
+    }
+
+    startProgressTracking() {
+        if (!this.sessionId) return;
+        
+        // Close existing connection
+        if (this.eventSource) {
+            this.eventSource.close();
+        }
+        
+        // Start Server-Sent Events connection
+        this.eventSource = new EventSource(`/api/progress/${this.sessionId}`);
+        
+        this.eventSource.onmessage = (event) => {
+            try {
+                const data = JSON.parse(event.data);
+                console.log('Progress update:', data);
+                
+                if (data.type === 'progress') {
+                    this.updateProgressUI(
+                        data.percentage || 0,
+                        data.message || 'Processing...',
+                        data.icon || '⚡',
+                        data.currentSection || ''
+                    );
+                    
+                    // Update fun facts based on progress
+                    this.updateFunFact(data.percentage);
+                }
+            } catch (error) {
+                console.error('Error parsing progress data:', error);
+            }
+        };
+        
+        this.eventSource.onerror = (error) => {
+            console.error('Progress tracking error:', error);
+        };
+    }
+
+    updateFunFact(percentage) {
+        const funFact = document.getElementById('funFact');
+        if (!funFact) return;
+        
+        const facts = [
+            'Your landing page is being generated using 13 specialized AI prompts!',
+            'Each section is crafted with precision using advanced AI technology.',
+            'Claude AI is analyzing your business to create the perfect design.',
+            'We\'re generating mobile-responsive, conversion-optimized content.',
+            'Your custom brand colors are being applied across all sections.',
+            'SEO-friendly structure is being built into your landing page.',
+            'Interactive elements and animations are being added.',
+            'Final touches are being applied to ensure perfection!'
+        ];
+        
+        const factIndex = Math.min(Math.floor(percentage / 12.5), facts.length - 1);
+        funFact.textContent = facts[factIndex];
+    }
+
     async generateLandingPage(formData) {
         try {
-            // Simulate progress updates
-            this.updateProgress(5, 'Connecting to AI...');
+            // Add session ID to form data
+            const formDataWithSession = {
+                ...formData,
+                sessionId: this.sessionId
+            };
             
             const response = await fetch('/api/generate-landing-page', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(formDataWithSession)
             });
-
-            this.updateProgress(20, 'AI analyzing your business...');
 
             if (!response.ok) {
                 const errorData = await response.json();
                 throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
 
-            this.updateProgress(50, 'Generating content sections...');
-
             // Handle response
             const result = await response.json();
-            
-            this.updateProgress(80, 'Finalizing your landing page...');
-            
-            // Small delay for better UX
-            await new Promise(resolve => setTimeout(resolve, 1000));
-            
-            this.updateProgress(100, 'Complete! Your landing page is ready.');
-            
-            // Another small delay before showing results
-            await new Promise(resolve => setTimeout(resolve, 500));
             
             this.handleGenerationComplete(result);
 
         } catch (error) {
             console.error('Generation error:', error);
-            this.hideProgress();
-            
-            // Show specific error messages
-            if (error.message.includes('overloaded')) {
-                this.showError('The AI service is currently overloaded. Please try again in a few minutes.');
-            } else if (error.message.includes('timeout')) {
-                this.showError('The request took too long to process. Please try again.');
-            } else if (error.message.includes('Invalid request')) {
-                this.showError('Please check your input and try again.');
-            } else {
-                this.showError('Failed to generate landing page. Please try again.');
-            }
+            this.showError(error.message);
         }
     }
 
@@ -381,6 +505,27 @@ class LandingPageBuilder {
     }
 
     showError(message) {
+        // Hide progress and show error section
+        this.progressSection.classList.add('hidden');
+        const errorSection = document.getElementById('errorSection');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        if (errorSection && errorMessage) {
+            errorMessage.textContent = message;
+            errorSection.classList.remove('hidden');
+            
+            // Setup retry button
+            const retryButton = document.getElementById('retryButton');
+            if (retryButton) {
+                retryButton.onclick = () => {
+                    errorSection.classList.add('hidden');
+                    // Show form again
+                    const formContainer = document.querySelector('form').parentElement;
+                    formContainer.classList.remove('hidden');
+                };
+            }
+        }
+        
         this.clearAllErrors();
         this.createToast(message, 'error');
     }

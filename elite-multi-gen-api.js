@@ -92,7 +92,7 @@ class EliteMultiGenAPI {
                 
                 if (progressCallback) {
                     const progress = 10 + (i / totalSections) * 70;
-                    progressCallback(progress, `Generating ${sectionName} section...`);
+                    progressCallback(progress, `Generating ${sectionName} section...`, sectionName);
                 }
                 
                 try {
@@ -125,7 +125,7 @@ class EliteMultiGenAPI {
             }
             
             // Generate JavaScript
-            if (progressCallback) progressCallback(85, 'Generating JavaScript functionality...');
+            if (progressCallback) progressCallback(85, 'Generating JavaScript functionality...', 'JavaScript');
             
             const jsPromptFile = promptFiles.find(f => f.startsWith('9-js'));
             if (jsPromptFile) {
@@ -157,7 +157,7 @@ CRITICAL: Analyze the HTML structure above and create JavaScript that works with
                 }
             }
             
-            if (progressCallback) progressCallback(95, 'Assembling final landing page...');
+            if (progressCallback) progressCallback(95, 'Assembling final landing page...', 'Final Assembly');
             
             // Stitch final HTML
             finalHTML = headSection + bodyContent + '\n' + jsSection + '\n</body>\n</html>';
@@ -167,7 +167,7 @@ CRITICAL: Analyze the HTML structure above and create JavaScript that works with
             const finalFile = path.join(this.finalDir, fileName);
             fs.writeFileSync(finalFile, finalHTML);
             
-            if (progressCallback) progressCallback(100, 'Generation complete!');
+            if (progressCallback) progressCallback(100, 'Generation complete!', 'Complete');
             
             console.log('🏁 Final HTML created:', finalFile);
             

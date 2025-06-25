@@ -115,8 +115,19 @@ async function sendEmailNotification(formData, result) {
 }
 
 // Direct implementation of landing page generation
-async function generateLandingPage(formData) {
+async function generateLandingPage(formData, sessionId = null) {
   console.log('📝 Generating landing page with form data:', Object.keys(formData));
+  
+  // Send initial progress update
+  if (sessionId) {
+    sendProgressUpdate(sessionId, {
+      type: 'progress',
+      stage: 'initializing',
+      message: 'Initializing AI generation...',
+      percentage: 5,
+      icon: '🚀'
+    });
+  }
   
   const businessName = formData.businessName || 'Your Business';
   const businessDesc = formData.businessDescription || 'Professional services and solutions';
@@ -152,9 +163,31 @@ async function generateLandingPage(formData) {
     };
     
     try {
+      if (sessionId) {
+        sendProgressUpdate(sessionId, {
+          type: 'progress',
+          stage: 'starting_sections',
+          message: 'Starting section-by-section generation...',
+          percentage: 10,
+          icon: '🏗️'
+        });
+      }
+      
       const eliteGen = require('./elite-multi-gen-api');
-      result = await eliteGen.generateWithProgress(eliteInput, (progress, message) => {
+      result = await eliteGen.generateWithProgress(eliteInput, (progress, message, sectionName) => {
         console.log(`📊 Progress: ${progress}% - ${message}`);
+        
+        // Send real-time progress updates
+        if (sessionId) {
+          sendProgressUpdate(sessionId, {
+            type: 'progress',
+            stage: 'generating_section',
+            message: message,
+            percentage: Math.round(progress),
+            currentSection: sectionName,
+            icon: progress < 90 ? '⚡' : '🎨'
+          });
+        }
       });
       
       if (result.success) {
@@ -784,17 +817,20 @@ app.post('/api/claude', async (req, res) => {
 });
 
 app.post('/api/generate-landing-page', async (req, res) => {
-  // Set extended response timeout for two-stage generation
-  res.setTimeout(120000); // 120 seconds (2 minutes)
+  // Set extended response timeout for section-by-section generation
+  res.setTimeout(720000); // 12 minutes for full generation
   
   // Set keep-alive headers to prevent gateway timeout
   res.setHeader('Connection', 'keep-alive');
-  res.setHeader('Keep-Alive', 'timeout=120, max=1');
+  res.setHeader('Keep-Alive', 'timeout=720, max=1');
   
   try {
     console.log('📝 Landing page generation requested');
     console.log('🔍 Request body keys:', Object.keys(req.body));
     console.log('🔍 Memory usage before:', process.memoryUsage().heapUsed / 1024 / 1024, 'MB');
+    
+    // Generate or use provided session ID for progress tracking
+    const sessionId = req.body.sessionId || Date.now().toString();
     
     // Track request start time for Railway timeout management
     const requestStartTime = Date.now();
@@ -808,12 +844,13 @@ app.post('/api/generate-landing-page', async (req, res) => {
       });
     }
 
-    // Add timeout wrapper for section-by-section generation (increased for multiple API calls)
+    // Add timeout wrapper for section-by-section generation (increased for 13 sections + assembly)
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Generation timeout after 180 seconds')), 180000); // 3 minutes for 13 sections
+      setTimeout(() => reject(new Error('Generation timeout after 600 seconds')), 600000); // 10 minutes for 13 sections
     });
     
-    const generationPromise = generateLandingPage(req.body);
+    // Pass sessionId to generation function for progress tracking
+    const generationPromise = generateLandingPage(req.body, sessionId);
     
     const result = await Promise.race([generationPromise, timeoutPromise]);
     
@@ -952,6 +989,56 @@ app.post('/api/generate-elite-landing', async (req, res) => {
   }
 });
 
+// SSE endpoint for real-time progress updates
+app.get('/api/progress/:sessionId', (req, res) => {
+  const sessionId = req.params.sessionId;
+  
+  // Set SSE headers
+  res.writeHead(200, {
+    'Content-Type': 'text/event-stream',
+    'Cache-Control': 'no-cache',
+    'Connection': 'keep-alive',
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Headers': 'Cache-Control'
+  });
+
+  // Store the response object for this session
+  if (!global.progressConnections) {
+    global.progressConnections = new Map();
+  }
+  global.progressConnections.set(sessionId, res);
+
+  // Send initial connection confirmation
+  res.write(`data: ${JSON.stringify({
+    type: 'connected',
+    message: 'Progress tracking connected',
+    timestamp: Date.now()
+  })}\n\n`);
+
+  // Clean up on client disconnect
+  req.on('close', () => {
+    if (global.progressConnections) {
+      global.progressConnections.delete(sessionId);
+    }
+  });
+});
+
+// Function to send progress updates to a specific session
+function sendProgressUpdate(sessionId, data) {
+  if (global.progressConnections && global.progressConnections.has(sessionId)) {
+    const res = global.progressConnections.get(sessionId);
+    try {
+      res.write(`data: ${JSON.stringify({
+        ...data,
+        timestamp: Date.now()
+      })}\n\n`);
+    } catch (error) {
+      console.error('Error sending progress update:', error);
+      global.progressConnections.delete(sessionId);
+    }
+  }
+}
+
 // API ENDPOINT: Get list of generated sections
 app.get('/api/sections', (req, res) => {
   try {
@@ -1069,9 +1156,9 @@ const server = app.listen(PORT, '0.0.0.0', () => {
 });
 
 // Set server timeouts to handle long-running requests (increased for section generation)
-server.timeout = 300000; // 5 minutes for section-by-section generation
-server.keepAliveTimeout = 300000; // 5 minutes
-server.headersTimeout = 305000; // Slightly higher than keepAliveTimeout
+server.timeout = 720000; // 12 minutes for section-by-section generation
+server.keepAliveTimeout = 720000; // 12 minutes
+server.headersTimeout = 725000; // Slightly higher than keepAliveTimeout
 
 // Memory monitoring
 setInterval(() => {

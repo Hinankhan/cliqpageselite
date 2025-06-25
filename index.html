@@ -292,38 +292,65 @@
                 </form>
             </div>
 
-            <!-- Progress Section -->
+            <!-- Enhanced Progress Section -->
             <div id="progressSection" class="hidden mt-8 glass-effect rounded-3xl shadow-2xl p-8">
-                <div class="text-center mb-6">
-                    <div class="inline-flex items-center justify-center w-16 h-16 bg-indigo-100 rounded-2xl mb-4">
-                        <svg class="w-8 h-8 text-indigo-600 animate-spin" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                <!-- Header -->
+                <div class="text-center mb-8">
+                    <div class="inline-flex items-center justify-center w-20 h-20 bg-indigo-100 rounded-3xl mb-6">
+                        <div id="progressIcon" class="text-3xl animate-pulse">🚀</div>
+                    </div>
+                    <h3 class="text-3xl font-bold text-gray-800 mb-3">Creating Your Landing Page</h3>
+                    <p class="text-gray-600 text-lg">AI is crafting your professional landing page...</p>
+                </div>
+                
+                <!-- Main Progress Bar -->
+                <div class="mb-8">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-medium text-gray-600">Generation Progress</span>
+                        <span id="progressPercentage" class="text-sm font-bold text-indigo-600">0%</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-4 overflow-hidden shadow-inner">
+                        <div id="progressBar" class="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 h-4 rounded-full transition-all duration-700 progress-shimmer" style="width: 0%">
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Current Step -->
+                <div class="text-center mb-8">
+                    <p id="progressText" class="text-xl font-semibold text-gray-800 mb-2">Initializing generation...</p>
+                    <p id="currentSection" class="text-gray-600 italic"></p>
+                </div>
+                
+                <!-- Section Progress List -->
+                <div id="sectionProgress" class="space-y-3">
+                    <!-- Sections will be dynamically added here -->
+                </div>
+                
+                <!-- Fun Facts -->
+                <div class="mt-8 p-6 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-2xl">
+                    <div class="text-center">
+                        <p class="text-sm text-gray-600 mb-2">💡 <strong>Did you know?</strong></p>
+                        <p id="funFact" class="text-sm text-gray-700">Your landing page is being generated using 13 specialized AI prompts!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Error Section -->
+            <div id="errorSection" class="hidden mt-8 glass-effect rounded-3xl shadow-2xl p-8 border-l-4 border-red-500">
+                <div class="text-center">
+                    <div class="inline-flex items-center justify-center w-16 h-16 bg-red-100 rounded-2xl mb-4">
+                        <svg class="w-8 h-8 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
                     </div>
-                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Creating Your Landing Page</h3>
-                    <p class="text-gray-600">AI is crafting your perfect landing page...</p>
-                </div>
-                
-                <div class="w-full bg-gray-200 rounded-full h-3 mb-4 overflow-hidden">
-                    <div id="progressBar" class="bg-gradient-to-r from-indigo-500 to-purple-600 h-3 rounded-full transition-all duration-500 progress-shimmer" style="width: 0%">
-                    </div>
-                </div>
-                
-                <p id="progressText" class="text-center text-gray-700 font-medium">Initializing generation...</p>
-                
-                <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-gray-600">
-                    <div class="flex items-center">
-                        <div class="w-2 h-2 bg-green-500 rounded-full mr-2"></div>
-                        AI analyzing your business
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-2 h-2 bg-yellow-500 rounded-full mr-2"></div>
-                        Generating content sections
-                    </div>
-                    <div class="flex items-center">
-                        <div class="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                        Finalizing design
-                    </div>
+                    <h3 class="text-2xl font-semibold text-gray-800 mb-2">Generation Failed</h3>
+                    <p id="errorMessage" class="text-gray-600 mb-6">Something went wrong while generating your landing page.</p>
+                    <button id="retryButton" class="inline-flex items-center justify-center px-6 py-3 bg-red-600 text-white rounded-xl hover:bg-red-700 transition-colors font-semibold">
+                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+                        </svg>
+                        Try Again
+                    </button>
                 </div>
             </div>
 
