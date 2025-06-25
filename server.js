@@ -115,9 +115,40 @@ async function generateLandingPage(formData) {
   
   let result;
   
-  // Use AI if configured, otherwise use demo mode
-  if (aiProvider === 'claude' && process.env.ANTHROPIC_API_KEY) {
-    result = await generateWithClaude(formData);
+  // PRIORITY 1: Use Elite Multi-Gen (section-by-section) if API key available
+  if (process.env.ANTHROPIC_API_KEY) {
+    console.log('🚀 Using ELITE MULTI-GEN (section-by-section generation)');
+    
+    // Transform form data to elite format
+    const eliteInput = {
+      email: formData.email || contactInfo,
+      business_email: formData.businessEmail || formData.email || contactInfo,
+      phone_number: formData.phoneNumber || phoneNumber,
+      company_name: formData.businessName || businessName,
+      business_description: formData.businessDescription || businessDesc,
+      target_audience: formData.targetAudience || targetAudience,
+      page_style: formData.pageStyle || pageStyle,
+      primary_goal: formData.primaryGoal || primaryGoal,
+      primary_color: formData.primaryColor || primaryColor,
+      secondary_color: formData.secondaryColor || secondaryColor,
+      custom_instructions: formData.customInstructions || designInstructions,
+      website_url: formData.websiteUrl || ''
+    };
+    
+    try {
+      const eliteGen = require('./elite-multi-gen-api');
+      result = await eliteGen.generateWithProgress(eliteInput, (progress, message) => {
+        console.log(`📊 Progress: ${progress}% - ${message}`);
+      });
+      
+      if (result.success) {
+        result.message = `Landing page generated using ELITE multi-section approach. ${result.sectionsGenerated?.length || 'Multiple'} sections created.`;
+        result.isElite = true;
+      }
+    } catch (error) {
+      console.error('❌ Elite generation failed, falling back to single-prompt method:', error);
+      result = await generateWithClaude(formData);
+    }
   } else if (aiProvider === 'openai' && process.env.OPENAI_API_KEY) {
     result = await generateWithOpenAI(formData);
   } else {
@@ -902,6 +933,77 @@ app.post('/api/generate-elite-landing', async (req, res) => {
       success: false,
       error: error.message || 'Failed to generate landing page'
     });
+  }
+});
+
+// API ENDPOINT: Get list of generated sections
+app.get('/api/sections', (req, res) => {
+  try {
+    const eliteGen = require('./elite-multi-gen-api');
+    const sections = eliteGen.getSectionsList();
+    
+    res.json({
+      success: true,
+      sections: sections,
+      count: sections.length,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('❌ Error getting sections:', error);
+    res.status(500).json({
+      success: false,
+      error: error.message
+    });
+  }
+});
+
+// API ENDPOINT: Serve individual section files
+app.get('/temp/sections/:filename', (req, res) => {
+  try {
+    const filename = req.params.filename;
+    const sectionsDir = path.join(__dirname, 'temp', 'sections');
+    const filePath = path.join(sectionsDir, filename);
+    
+    // Security check - ensure file is within sections directory
+    if (!filePath.startsWith(sectionsDir)) {
+      return res.status(400).json({ error: 'Invalid file path' });
+    }
+    
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, 'utf8');
+      res.setHeader('Content-Type', 'text/html');
+      res.send(content);
+    } else {
+      res.status(404).json({ error: 'Section file not found' });
+    }
+  } catch (error) {
+    console.error('❌ Error serving section:', error);
+    res.status(500).json({ error: 'Failed to serve section file' });
+  }
+});
+
+// API ENDPOINT: Serve final generated files
+app.get('/temp/final/:filename', (req, res) => {
+  try {
+    const filename = req.params.filename;
+    const finalDir = path.join(__dirname, 'temp', 'final');
+    const filePath = path.join(finalDir, filename);
+    
+    // Security check - ensure file is within final directory
+    if (!filePath.startsWith(finalDir)) {
+      return res.status(400).json({ error: 'Invalid file path' });
+    }
+    
+    if (fs.existsSync(filePath)) {
+      const content = fs.readFileSync(filePath, 'utf8');
+      res.setHeader('Content-Type', 'text/html');
+      res.send(content);
+    } else {
+      res.status(404).json({ error: 'Final file not found' });
+    }
+  } catch (error) {
+    console.error('❌ Error serving final file:', error);
+    res.status(500).json({ error: 'Failed to serve final file' });
   }
 });
 
