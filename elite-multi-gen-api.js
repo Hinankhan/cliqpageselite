@@ -409,10 +409,17 @@ OUTPUT REQUIREMENTS:
         };
 
         return new Promise((resolve, reject) => {
+            // Add timeout for each section generation (45 seconds per section)
+            const timeout = setTimeout(() => {
+                req.destroy();
+                reject(new Error('Section generation timeout after 45 seconds'));
+            }, 45000);
+
             const req = https.request(options, (res) => {
                 let data = '';
                 res.on('data', chunk => data += chunk);
                 res.on('end', () => {
+                    clearTimeout(timeout);
                     if (res.statusCode === 200) {
                         try {
                             const parsed = JSON.parse(data);
@@ -426,7 +433,11 @@ OUTPUT REQUIREMENTS:
                 });
             });
 
-            req.on('error', reject);
+            req.on('error', (err) => {
+                clearTimeout(timeout);
+                reject(err);
+            });
+            
             req.write(requestData);
             req.end();
         });

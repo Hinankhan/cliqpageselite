@@ -242,6 +242,39 @@
     outline-offset: 2px;
 }
 
+/* Custom Radio Button Enhancements */
+.radio-option {
+    transition: all 0.2s ease;
+}
+
+.radio-option:hover {
+    background-color: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.radio-option.selected {
+    border-color: #6366f1 !important;
+    background-color: #eef2ff !important;
+}
+
+.radio-option.selected .radio-indicator {
+    border-color: #6366f1 !important;
+    background-color: #6366f1 !important;
+}
+
+.radio-option.selected .radio-dot {
+    transform: translate(-50%, -50%) scale(1) !important;
+}
+
+/* Radio indicator styling */
+.radio-indicator {
+    transition: all 0.2s ease;
+}
+
+.radio-dot {
+    transition: all 0.2s ease;
+}
+
 /* Print Styles */
 @media print {
     .toast-container,

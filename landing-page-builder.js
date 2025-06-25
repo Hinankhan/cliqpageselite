@@ -454,9 +454,71 @@ class LandingPageBuilder {
     }
 }
 
+// Radio button functionality
+function initializeRadioButtons() {
+    const radioOptions = document.querySelectorAll('.radio-option');
+    
+    radioOptions.forEach(option => {
+        const input = option.querySelector('input[type="radio"]');
+        
+        // Handle click on the label/option
+        option.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            // Remove selected class from all options in the same group
+            const groupName = input.name;
+            const allOptionsInGroup = document.querySelectorAll(`input[name="${groupName}"]`);
+            allOptionsInGroup.forEach(otherInput => {
+                const otherOption = otherInput.closest('.radio-option');
+                if (otherOption) {
+                    otherOption.classList.remove('selected');
+                }
+                otherInput.checked = false;
+            });
+            
+            // Select this option
+            input.checked = true;
+            option.classList.add('selected');
+            
+            // Clear any validation errors
+            const fieldContainer = option.closest('.form-field') || option.parentElement;
+            const errorElement = fieldContainer.querySelector('.invalid-feedback');
+            if (errorElement) {
+                errorElement.classList.add('hidden');
+            }
+            
+            // Trigger validation
+            if (window.landingPageBuilder) {
+                window.landingPageBuilder.validatePageStyle();
+            }
+        });
+        
+        // Handle direct input change (for keyboard navigation)
+        input.addEventListener('change', function() {
+            if (this.checked) {
+                // Remove selected class from all options in the same group
+                const groupName = this.name;
+                const allOptionsInGroup = document.querySelectorAll(`input[name="${groupName}"]`);
+                allOptionsInGroup.forEach(otherInput => {
+                    const otherOption = otherInput.closest('.radio-option');
+                    if (otherOption) {
+                        otherOption.classList.remove('selected');
+                    }
+                });
+                
+                // Select this option
+                option.classList.add('selected');
+            }
+        });
+    });
+}
+
 // Initialize the application when DOM is loaded
 document.addEventListener('DOMContentLoaded', () => {
-    new LandingPageBuilder();
+    window.landingPageBuilder = new LandingPageBuilder();
+    
+    // Initialize radio buttons
+    initializeRadioButtons();
     
     // Add some nice animations
     const observer = new IntersectionObserver((entries) => {

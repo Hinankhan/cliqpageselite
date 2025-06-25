@@ -792,9 +792,9 @@ app.post('/api/generate-landing-page', async (req, res) => {
       });
     }
 
-    // Add timeout wrapper for two-stage generation (reduced to work within Railway limits)
+    // Add timeout wrapper for section-by-section generation (increased for multiple API calls)
     const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Generation timeout after 75 seconds')), 75000);
+      setTimeout(() => reject(new Error('Generation timeout after 180 seconds')), 180000); // 3 minutes for 13 sections
     });
     
     const generationPromise = generateLandingPage(req.body);
@@ -1021,10 +1021,10 @@ const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`💾 Memory usage:`, process.memoryUsage());
 });
 
-// Set server timeouts to handle long-running requests
-server.timeout = 120000; // 2 minutes
-server.keepAliveTimeout = 120000; // 2 minutes
-server.headersTimeout = 125000; // Slightly higher than keepAliveTimeout
+// Set server timeouts to handle long-running requests (increased for section generation)
+server.timeout = 300000; // 5 minutes for section-by-section generation
+server.keepAliveTimeout = 300000; // 5 minutes
+server.headersTimeout = 305000; // Slightly higher than keepAliveTimeout
 
 // Memory monitoring
 setInterval(() => {
