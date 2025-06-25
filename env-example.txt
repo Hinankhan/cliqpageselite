@@ -1,0 +1,19 @@
+# AI Provider Configuration
+# Set to 'openai' or 'claude' to switch between providers
+AI_PROVIDER=claude
+
+# Anthropic Claude Configuration
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+
+# OpenAI Configuration
+OPENAI_API_KEY=your_openai_api_key_here
+
+# Claude Configuration (alternative naming)
+CLAUDE_API_KEY=your_claude_api_key_here
+
+# Email Configuration (Resend)
+RESEND_API_KEY=your_resend_api_key_here
+FROM_EMAIL=noreply@yourdomain.com
+
+# Netlify Configuration (automatically set by Netlify)
+URL=https://your-site.netlify.app 

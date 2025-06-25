@@ -1,0 +1,48 @@
+Generate ONLY the PRODUCT SHOWCASE SECTION for {companyName}.
+
+SECTION REQUIREMENTS:
+- Section MUST include id="product-showcase" attribute for navigation functionality
+- Section title: "Meet {companyName}" or "Product Overview" or similar
+- Product-focused content structure:
+  - Hero product image or mockup (use placeholder or CSS-generated visual)
+  - Key product highlights relevant to {businessDescription}
+  - 3-4 standout features that solve {primaryGoal}
+  - Interactive elements or visual demonstrations
+  - Social proof or trust indicators
+  - Call-to-action related to trying/using the product
+- Layout: Side-by-side, centered showcase, or interactive demo using {layoutStyle}
+- Colors: {primaryColor} and {secondaryColor} in Tailwind format
+- Tone: {tone}
+- Style variation: {designStyle}
+
+COPYWRITING FOCUS:
+- Highlight unique selling propositions
+- Focus on benefits over features for {targetMarket}
+- Use compelling product descriptions
+- Create desire and excitement about the product
+- Connect features directly to solving {primaryGoal}
+
+VISUAL ELEMENTS:
+- Product mockups or interface previews
+- Feature callouts with icons
+- Screenshots or demo visuals (use placeholder images)
+- Interactive hover states or animations
+- Modern, clean presentation style
+- Mobile-responsive product showcase
+
+SHOWCASE STRUCTURE:
+- Primary product visual (mockup, screenshot, or illustration)
+- Feature highlights with icons and descriptions
+- Benefits statements targeted at {targetMarket}
+- Trust indicators (badges, certifications, etc.)
+- Clear call-to-action: "{ctaPrimary}"
+
+CRITICAL RESTRICTIONS:
+- NO <style> tags - use only Tailwind classes
+- NO <script> tags - JavaScript will be handled separately
+- Use only semantic HTML with Tailwind utility classes
+- Section tag MUST include id="product-showcase" attribute
+- Focus on compelling product presentation and visual appeal
+- Use placeholder images or CSS-generated visuals
+
+Output only the <section id="product-showcase"> tag with product showcase content. Pure HTML with Tailwind classes only. 

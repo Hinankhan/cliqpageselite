@@ -1,0 +1,26 @@
+Generate ONLY the FOOTER SECTION for {companyName}.
+
+SECTION REQUIREMENTS:
+- 4 columns: Company, Services, Resources, Contact
+- Company column: {companyName} branding and mission
+- Services: Related to {businessDescription}
+- Resources: Relevant to {targetMarket}
+- Contact: 
+  - Email: {businessEmail}
+  - Phone: {phoneNumber}
+- Social media icons (LinkedIn, Twitter, Facebook) - use SVG icons or Unicode
+- Copyright notice with {companyName}
+- Colors: {primaryColor} and {secondaryColor} in Tailwind format
+- Style: {designStyle}
+- Tone: {tone}
+- Design variation: {layoutStyle}
+
+CRITICAL RESTRICTIONS:
+- NO <style> tags - use only Tailwind classes
+- NO <script> tags - JavaScript will be handled separately
+- NO external libraries or dependencies
+- Use only semantic HTML with Tailwind utility classes
+- Use inline SVG icons or Unicode symbols for social media
+- Structure for vanilla JavaScript hover effects
+
+Output only the <footer> tag content. Pure HTML with Tailwind classes only. 

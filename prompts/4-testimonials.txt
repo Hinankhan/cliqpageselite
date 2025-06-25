@@ -1,0 +1,31 @@
+Generate ONLY the TESTIMONIALS/SOCIAL PROOF SECTION for {companyName}.
+
+SECTION REQUIREMENTS:
+- Section title: "What Our Clients Say" or similar
+- Logo wall: 6 recognizable brand names that would use {companyName}
+- Testimonial carousel with 3 realistic client quotes:
+  - Names and job titles relevant to {targetMarket}
+  - Quotes highlighting {primaryGoal} benefits
+  - Professional avatars (CSS-generated or placeholders)
+- Carousel structure with CORRECT indexing for JavaScript functionality
+- Colors: {primaryColor} and {secondaryColor} in Tailwind format
+- Tone: {tone}
+- Style: {designStyle}
+- Design variation: {layoutStyle}
+
+CAROUSEL FUNCTIONALITY REQUIREMENTS:
+- Container: data-carousel="testimonials"
+- Slide container: data-carousel-container
+- Slides: data-slide="0", data-slide="1", data-slide="2" (0-based indexing!)
+- Dots: data-carousel-dot="0", data-carousel-dot="1", data-carousel-dot="2" (0-based indexing!)
+- First dot should be active (darker color) by default
+
+CRITICAL RESTRICTIONS:
+- NO <style> tags - use only Tailwind classes
+- NO <script> tags - JavaScript will be handled separately
+- NO external libraries (NO Swiper, NO jQuery, etc.)
+- Use only semantic HTML with Tailwind utility classes
+- MUST use 0-based indexing for all data attributes (start from 0, not 1)
+- Structure carousel for pure vanilla JavaScript control
+
+Output only the <section> tag with testimonials content. Pure HTML with Tailwind classes only. 

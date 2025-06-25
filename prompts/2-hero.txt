@@ -1,0 +1,50 @@
+Generate ONLY the HERO SECTION content for {companyName}.
+
+SECTION STRUCTURE:
+- Sticky navigation header with company name "{companyName}" and smooth scroll links
+- MOBILE RESPONSIVE NAVIGATION:
+  - Desktop: Show navigation links horizontally
+  - Mobile: Show hamburger menu button (☰) that toggles vertical menu
+  - Mobile menu should slide down/fade in when opened
+  - Mobile menu items should be stacked vertically with proper spacing
+- Navigation links MUST use these exact href values to match section IDs:
+  - href="#problem" (for Problem/Challenge)
+  - href="#how-it-works" (for How It Works)
+  - href="#features" (for Features)
+  - href="#product-showcase" (for Product Showcase)
+  - href="#value-props" (for Value Props)
+  - href="#pricing" (for Pricing)
+  - href="#contact" (for Contact)
+- Hero section with:
+  - Headline: Dynamic headline based on {businessDescription} and {primaryGoal}
+  - Subheading: Highlight benefits for {targetMarket} with {tone} style
+  - Primary CTA button: "{ctaPrimary}"
+  - Secondary CTA link: "{ctaSecondary}"
+  - Background: Gradient using {primaryColor} and {secondaryColor}
+  - Floating particles or subtle animations
+
+CONTACT INFO:
+- Email: {businessEmail}
+- Phone: {phoneNumber}
+
+MOBILE NAVIGATION REQUIREMENTS:
+- Hamburger button: visible on mobile (md:hidden), hidden on desktop
+- Desktop menu: hidden on mobile (hidden md:flex), visible on desktop
+- Mobile menu: data-mobile-menu attribute for JavaScript targeting
+- Mobile menu should be hidden by default (add 'hidden' class)
+- Use responsive Tailwind classes (sm:, md:, lg:, xl:)
+
+STYLING REQUIREMENTS:
+- Use Tailwind CSS classes exclusively
+- Primary color: {primaryColor} (use as text-[{primaryColor}], bg-[{primaryColor}])
+- Secondary color: {secondaryColor} (use as text-[{secondaryColor}], bg-[{secondaryColor}])
+- Tone: {tone}
+- Style: {designStyle}
+
+NAVIGATION FUNCTIONALITY:
+- Ensure all navigation anchor tags use exact href values for new sections
+- Add smooth scroll behavior for navigation links
+- Mobile hamburger menu with proper toggle functionality
+- Responsive design that works on all screen sizes
+
+Output only the <header> and <section> tags for the hero. No DOCTYPE, no head, no body tags. Use consistent Tailwind classes. 

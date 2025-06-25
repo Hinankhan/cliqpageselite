@@ -1,0 +1,30 @@
+Generate ONLY the CONTACT SECTION for {companyName}.
+
+SECTION REQUIREMENTS:
+- Section MUST include id="contact" attribute for navigation functionality
+- Section title: "Get in Touch" or similar
+- Contact form with:
+  - Name, Email, Message fields (all required)
+  - CTA button: "{ctaPrimary}"
+  - Form validation attributes
+- Contact information display:
+  - Email: {businessEmail}
+  - Phone: {phoneNumber}
+  - Business address if relevant
+- Colors: {primaryColor} and {secondaryColor} in Tailwind format
+- Tone: {tone}
+- Style: {designStyle}
+- Design variation: {layoutStyle}
+
+FORM FUNCTIONALITY:
+- Form: data-contact-form
+- Form fields: data-form-field
+- Proper form validation attributes (required, type="email", etc.)
+
+CRITICAL RESTRICTIONS:
+- NO <style> tags - use only Tailwind classes
+- NO <script> tags - JavaScript will be handled separately
+- Use only semantic HTML with Tailwind utility classes
+- Section tag MUST include id="contact" attribute
+
+Output only the <section id="contact"> tag with contact content. Pure HTML with Tailwind classes only. 

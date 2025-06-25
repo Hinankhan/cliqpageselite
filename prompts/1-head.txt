@@ -1,0 +1,21 @@
+Generate the complete HTML document structure with <head> section for {companyName}.
+
+STRUCTURE REQUIRED:
+- Complete HTML5 DOCTYPE declaration
+- <html> and <head> opening tags
+- Meta tags for SEO, responsive viewport, theme-color using {primaryColor}
+- Title: "{companyName} - {businessDescription}"
+- Link to Google Fonts (professional fonts like Inter, Poppins)
+- IMPORTANT: Include Tailwind CSS from CDN for utility classes
+- Complete <style> tag with ALL additional CSS for the entire page including:
+  - CSS root variables using {primaryColor} and {secondaryColor}
+  - Any custom styles that Tailwind doesn't cover
+  - Smooth scroll behavior and enhanced animations
+  - Custom keyframes: fade-in, slide-up, float, shimmer, glow
+  - Form styles if {formIntegration} is yes
+  - Any section-specific custom styles not covered by Tailwind
+- Close </head> and open <body>
+
+CRITICAL: Include Tailwind CSS CDN link before the custom <style> tag so utility classes work properly. The sections will use Tailwind classes extensively.
+
+The CSS should be complete and ready for all sections. Use {primaryColor} and {secondaryColor} consistently throughout.

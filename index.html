@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CliqPages Elite - Landing Page Builder</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <div class="container mx-auto px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">CliqPages Elite</h1>
+            <p class="text-gray-600">AI-Powered Landing Page Generator</p>
+        </header>
+
+        <div class="max-w-4xl mx-auto">
+            <form id="landingPageForm" class="bg-white rounded-lg shadow-lg p-8">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Company Information -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Company Information</h3>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Company Name</label>
+                            <input type="text" id="companyName" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Your Company Name" required>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Business Description</label>
+                            <textarea id="businessDescription" rows="3" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Describe what your business does..." required></textarea>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Target Audience</label>
+                            <input type="text" id="targetAudience" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500" placeholder="Who is your target customer?">
+                        </div>
+                    </div>
+
+                    <!-- Design & Goals -->
+                    <div class="space-y-4">
+                        <h3 class="text-lg font-semibold text-gray-800">Design & Goals</h3>
+                        
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Primary Color</label>
+                            <input type="color" id="primaryColor" class="w-full h-12 border border-gray-300 rounded-lg" value="#3B82F6">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Secondary Color</label>
+                            <input type="color" id="secondaryColor" class="w-full h-12 border border-gray-300 rounded-lg" value="#10B981">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Primary Goal</label>
+                            <select id="primaryGoal" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="leads">Generate Leads</option>
+                                <option value="sales">Drive Sales</option>
+                                <option value="signups">Get Sign-ups</option>
+                                <option value="downloads">App Downloads</option>
+                                <option value="bookings">Book Appointments</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Industry</label>
+                            <select id="industry" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500">
+                                <option value="technology">Technology</option>
+                                <option value="healthcare">Healthcare</option>
+                                <option value="finance">Finance</option>
+                                <option value="education">Education</option>
+                                <option value="ecommerce">E-commerce</option>
+                                <option value="consulting">Consulting</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate Button -->
+                <div class="mt-8 text-center">
+                    <button type="submit" id="generateBtn" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg transition duration-200">
+                        Generate Landing Page
+                    </button>
+                </div>
+            </form>
+
+            <!-- Progress Section -->
+            <div id="progressSection" class="hidden mt-8 bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Generating Your Landing Page...</h3>
+                <div class="w-full bg-gray-200 rounded-full h-2.5">
+                    <div id="progressBar" class="bg-blue-600 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
+                </div>
+                <p id="progressText" class="text-sm text-gray-600 mt-2">Starting generation...</p>
+            </div>
+
+            <!-- Results Section -->
+            <div id="resultsSection" class="hidden mt-8 bg-white rounded-lg shadow-lg p-8">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Your Landing Page is Ready!</h3>
+                <div class="flex space-x-4">
+                    <a id="previewBtn" href="#" target="_blank" class="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200">
+                        Preview Page
+                    </a>
+                    <a id="downloadBtn" href="#" download class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200">
+                        Download HTML
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="landing-page-builder.js"></script>
+</body>
+</html>

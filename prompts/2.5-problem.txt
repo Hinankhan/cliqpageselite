@@ -1,0 +1,37 @@
+Generate ONLY the PROBLEM SECTION for {companyName}.
+
+SECTION REQUIREMENTS:
+- Section MUST include id="problem" attribute for navigation functionality
+- Section title: "The Challenge" or "What's Holding You Back?" or similar
+- Problem-focused content structure:
+  - Main headline highlighting the core problem {targetMarket} faces
+  - 2-3 pain points related to {businessDescription} and {primaryGoal}
+  - Visual elements: icons, illustrations, or graphics representing problems
+  - Emotional connection with {targetMarket} using {tone} style
+  - Statistics or facts that emphasize the problem severity
+- Layout: Split-screen, grid, or asymmetric design using {layoutStyle}
+- Colors: {primaryColor} and {secondaryColor} in Tailwind format
+- Tone: {tone}
+- Style variation: {designStyle}
+
+COPYWRITING FOCUS:
+- Use pain-driven headlines that resonate with {targetMarket}
+- Highlight consequences of not solving the problem
+- Create urgency around addressing the issue
+- Connect problem directly to {primaryGoal}
+- Use empathetic language matching {tone}
+
+VISUAL ELEMENTS:
+- Problem-focused icons (warning, decline, obstacles, etc.)
+- Contrasting colors to emphasize pain points
+- Visual hierarchy that draws attention to key problems
+- Responsive design with mobile-first approach
+
+CRITICAL RESTRICTIONS:
+- NO <style> tags - use only Tailwind classes
+- NO <script> tags - JavaScript will be handled separately
+- Use only semantic HTML with Tailwind utility classes
+- Section tag MUST include id="problem" attribute
+- Focus on compelling copywriting and visual presentation
+
+Output only the <section id="problem"> tag with problem content. Pure HTML with Tailwind classes only. 

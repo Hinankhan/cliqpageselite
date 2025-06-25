@@ -1,0 +1,22 @@
+Generate ONLY the FEATURES SECTION for {companyName}.
+
+SECTION REQUIREMENTS:
+- Section MUST include id="features" attribute for navigation functionality
+- Section title highlighting {primaryGoal} benefits
+- 3-4 feature cards with:
+  - Icons (SVG or Tailwind CSS generated)
+  - Feature titles related to {businessDescription}
+  - Benefits descriptions targeting {targetMarket}
+- Grid layout: responsive (1 col mobile, 3-4 col desktop)
+- Colors: {primaryColor} and {secondaryColor} in Tailwind format
+- Tone: {tone}
+- Style variation: {designStyle}
+- Layout variation: {layoutStyle}
+
+CRITICAL RESTRICTIONS:
+- NO <style> tags - use only Tailwind classes
+- NO <script> tags - JavaScript will be handled separately
+- Use only semantic HTML with Tailwind utility classes
+- Section tag MUST include id="features" attribute
+
+Output only the <section id="features"> tag with features content. Pure HTML with Tailwind classes only. 

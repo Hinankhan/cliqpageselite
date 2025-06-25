@@ -1,0 +1,21 @@
+Generate ONLY the FAQ SECTION for {companyName}.
+
+SECTION REQUIREMENTS:
+- Section title: "Frequently Asked Questions"
+- 5-6 Q&A pairs relevant to {businessDescription} and {targetMarket}
+- Questions should address common concerns about {primaryGoal}
+- Answers using {tone} style
+- Accordion structure for vanilla JavaScript implementation
+- Colors: {primaryColor} and {secondaryColor} in Tailwind format
+- Style: {designStyle}
+- Design variation: {layoutStyle}
+
+CRITICAL RESTRICTIONS:
+- NO <style> tags - use only Tailwind classes
+- NO <script> tags - JavaScript will be handled separately
+- NO external libraries or dependencies
+- Use only semantic HTML with Tailwind utility classes
+- Add data attributes for accordion functionality (data-faq-trigger, data-faq-content, etc.)
+- Structure for vanilla JavaScript accordion control
+
+Output only the <section> tag with FAQ content. Pure HTML with Tailwind classes only. 

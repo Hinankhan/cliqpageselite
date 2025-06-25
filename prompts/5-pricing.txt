@@ -1,0 +1,29 @@
+Generate ONLY the PRICING SECTION for {companyName}.
+
+SECTION REQUIREMENTS:
+- Section MUST include id="pricing" attribute for navigation functionality
+- Section title: "Simple Pricing" or similar
+- 2-3 pricing tiers with:
+  - Plan names relevant to {businessDescription}
+  - Monthly/Yearly toggle functionality
+  - Feature lists highlighting {primaryGoal} benefits
+  - CTA buttons: "{ctaPrimary}"
+  - Popular plan highlighted with {primaryColor}
+- Responsive grid layout (1 col mobile, 2-3 col desktop)
+- Colors: {primaryColor} and {secondaryColor} in Tailwind format
+- Tone: {tone}
+- Style: {designStyle}
+- Design variation: {layoutStyle}
+
+PRICING TOGGLE FUNCTIONALITY:
+- Toggle buttons: data-pricing-toggle="monthly" and data-pricing-toggle="yearly"
+- Monthly prices: data-price-monthly
+- Yearly prices: data-price-yearly (hidden by default)
+
+CRITICAL RESTRICTIONS:
+- NO <style> tags - use only Tailwind classes
+- NO <script> tags - JavaScript will be handled separately
+- Use only semantic HTML with Tailwind utility classes
+- Section tag MUST include id="pricing" attribute
+
+Output only the <section id="pricing"> tag with pricing content. Pure HTML with Tailwind classes only. 

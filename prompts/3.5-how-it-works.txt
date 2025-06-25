@@ -1,0 +1,47 @@
+Generate ONLY the HOW IT WORKS SECTION for {companyName}.
+
+SECTION REQUIREMENTS:
+- Section MUST include id="how-it-works" attribute for navigation functionality
+- Section title: "How It Works" or "Our Simple Process" or similar
+- Process-focused content structure:
+  - Clear 3-4 step process related to {businessDescription}
+  - Each step with:
+    - Step number/icon
+    - Action-oriented title
+    - Brief description explaining the process
+    - Visual element (icon, illustration, or graphic)
+  - Connect each step to solving {primaryGoal}
+  - Timeline or flow indicators between steps
+- Layout: Horizontal timeline, vertical flow, or step-by-step grid using {layoutStyle}
+- Colors: {primaryColor} and {secondaryColor} in Tailwind format
+- Tone: {tone}
+- Style variation: {designStyle}
+
+COPYWRITING FOCUS:
+- Use clear, action-oriented language
+- Make complex processes seem simple and approachable
+- Focus on benefits at each step for {targetMarket}
+- Use numbered steps or clear progression indicators
+- Emphasize ease of use and effectiveness
+
+VISUAL ELEMENTS:
+- Step indicators (numbers, arrows, progress bars)
+- Process flow visualization
+- Action-focused icons (play, arrow, check, etc.)
+- Connected visual elements showing progression
+- Responsive design that works on all devices
+
+PROCESS STRUCTURE EXAMPLES:
+- Step 1: Sign Up/Get Started
+- Step 2: Setup/Configuration 
+- Step 3: Implementation/Action
+- Step 4: Results/Success
+
+CRITICAL RESTRICTIONS:
+- NO <style> tags - use only Tailwind classes
+- NO <script> tags - JavaScript will be handled separately
+- Use only semantic HTML with Tailwind utility classes
+- Section tag MUST include id="how-it-works" attribute
+- Focus on clear process explanation and visual flow
+
+Output only the <section id="how-it-works"> tag with how-it-works content. Pure HTML with Tailwind classes only. 

@@ -1,0 +1,58 @@
+Generate ONLY the VALUE PROPOSITIONS SECTION for {companyName}.
+
+SECTION REQUIREMENTS:
+- Section MUST include id="value-props" attribute for navigation functionality
+- Section title: "Why Choose {companyName}" or "Your Competitive Advantage" or similar
+- Value-focused content structure:
+  - Main value proposition headline for {targetMarket}
+  - 3-4 unique value propositions related to {businessDescription}
+  - Each value prop with:
+    - Compelling headline
+    - Benefit-focused description
+    - Supporting visual element or icon
+    - Quantifiable result when possible
+  - Competitive differentiation messaging
+  - Trust-building elements
+- Layout: Grid, cards, or comparison layout using {layoutStyle}
+- Colors: {primaryColor} and {secondaryColor} in Tailwind format
+- Tone: {tone}
+- Style variation: {designStyle}
+
+COPYWRITING FOCUS:
+- Emphasize unique benefits that competitors don't offer
+- Use specific, measurable value statements
+- Address {primaryGoal} directly in each value prop
+- Create emotional connection with {targetMarket}
+- Use confident, compelling language matching {tone}
+
+VALUE PROPOSITION EXAMPLES:
+- Time savings ("Save 10+ hours per week")
+- Cost reduction ("Cut costs by 50%")
+- Quality improvement ("99% accuracy guaranteed")
+- Ease of use ("Setup in 5 minutes")
+- Expert support ("24/7 dedicated support")
+- Proven results ("Trusted by 10,000+ businesses")
+
+VISUAL ELEMENTS:
+- Value-focused icons (growth, savings, efficiency, etc.)
+- Statistical callouts or numbers
+- Comparison elements vs. competitors
+- Trust badges or certifications
+- Clean, professional presentation
+- Mobile-responsive value showcase
+
+STRUCTURE FOCUS:
+- Clear hierarchy: Main value prop → Supporting props
+- Benefit-driven headlines over feature lists
+- Quantifiable results where applicable
+- Trust indicators and social proof integration
+- Clear connection to solving {primaryGoal}
+
+CRITICAL RESTRICTIONS:
+- NO <style> tags - use only Tailwind classes
+- NO <script> tags - JavaScript will be handled separately
+- Use only semantic HTML with Tailwind utility classes
+- Section tag MUST include id="value-props" attribute
+- Focus on compelling value communication and differentiation
+
+Output only the <section id="value-props"> tag with value propositions content. Pure HTML with Tailwind classes only. 

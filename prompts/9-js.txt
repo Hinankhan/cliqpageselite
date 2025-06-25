@@ -1,0 +1,77 @@
+Generate ONLY the JAVASCRIPT section that creates a fully functional landing page.
+
+ANALYZE THE PROVIDED HTML STRUCTURE AND CREATE VANILLA JAVASCRIPT FOR:
+
+1. **NAVIGATION & MOBILE MENU**
+   - Smooth scroll for anchor links (all sections: #problem, #how-it-works, #features, #product-showcase, #value-props, #pricing, #contact)
+   - MOBILE HAMBURGER MENU functionality:
+     - Toggle mobile menu visibility with hamburger button
+     - Smooth slide-down/fade-in animation for mobile menu
+     - Close menu when clicking outside or on menu links
+     - Proper ARIA attributes for accessibility
+     - Handle data-mobile-menu targeting
+   - Header hide/show on scroll
+   - Mobile-responsive behavior
+
+2. **CAROUSEL/SLIDER FUNCTIONALITY** 
+   - Pure vanilla JS carousel for testimonials (NO Swiper or external libraries)
+   - CRITICAL: Use 0-based indexing (data-slide="0,1,2" and data-carousel-dot="0,1,2")
+   - Initialize first slide properly with showSlide(0)
+   - Auto-play with pause on hover
+   - Manual navigation with dots/arrows
+   - Touch/swipe support for mobile
+   - Proper dot state management (active/inactive)
+
+3. **INTERACTIVE ELEMENTS**
+   - FAQ accordion (one open at a time)
+   - Pricing toggle (monthly/yearly)
+   - Contact form validation and submission
+   - Loading states and success messages
+
+4. **ANIMATIONS & EFFECTS**
+   - Intersection Observer for scroll animations
+   - Smooth reveal animations
+   - Hover effects and micro-interactions
+
+5. **FORM HANDLING**
+   - Real-time validation
+   - Error states
+   - Success feedback
+   - Loading spinners
+
+MOBILE MENU SPECIFIC REQUIREMENTS:
+- Target hamburger button and mobile menu using data attributes
+- Toggle 'hidden' class for show/hide functionality
+- Add smooth transitions (transform, opacity)
+- Close menu when clicking on navigation links
+- Close menu when clicking outside the menu area
+- Handle responsive behavior (auto-close on resize to desktop)
+
+CAROUSEL SPECIFIC REQUIREMENTS:
+- MUST use 0-based indexing system (start from 0, not 1)
+- Initialize carousel with showSlide(0) to display first slide
+- Handle data-slide="0", data-slide="1", data-slide="2" properly
+- Handle data-carousel-dot="0", data-carousel-dot="1", data-carousel-dot="2" properly
+- Update dot appearance to show active state (darker color for active dot)
+
+TECHNICAL REQUIREMENTS:
+- **NO external libraries** (NO jQuery, NO Swiper, NO AOS, etc.)
+- **Pure vanilla JavaScript** only
+- **Performance optimized** with event delegation
+- **Mobile responsive** with touch support
+- **Error handling** for missing elements
+- **Accessibility friendly** with proper ARIA attributes
+- **Cross-browser compatible**
+
+IMPLEMENTATION GUIDELINES:
+- Analyze actual HTML structure provided above
+- Use querySelector/querySelectorAll for existing elements only
+- Add proper error checking for missing elements
+- Use modern ES6+ features (const/let, arrow functions, etc.)
+- Optimize for performance with throttling/debouncing
+- Add smooth transitions with CSS classes
+- Ensure all carousels work properly with correct indexing
+- Implement responsive mobile menu with smooth animations
+- Handle navigation to all sections (problem, how-it-works, features, product-showcase, value-props, pricing, contact)
+
+OUTPUT FORMAT: Single <script> tag with all functionality consolidated and well-organized. 
