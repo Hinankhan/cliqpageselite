@@ -390,13 +390,22 @@ ${injectedPrompt}`;
     async sendClaudeRequest(prompt, context) {
         const https = require('https');
         
+        console.log(`🚀 Sending request to Claude Sonnet 4...`);
+        console.log(`🔍 Model: claude-sonnet-4-20250514`);
+        console.log(`🔍 Max tokens: 32000`);
+        console.log(`🔍 Prompt length: ${prompt.length} characters`);
+        
         const CONFIG = {
             MODEL: 'claude-sonnet-4-20250514',
-            MAX_TOKENS: 8192,
+            MAX_TOKENS: 32000, // Increased for Claude Sonnet 4 (supports up to 64K)
             TEMPERATURE: 0.3,
-            API_VERSION: '2023-06-01',
+            API_VERSION: '2023-06-01', // Updated for Claude 4 compatibility
             API_KEY: process.env.ANTHROPIC_API_KEY,
         };
+        
+        if (!CONFIG.API_KEY) {
+            throw new Error('ANTHROPIC_API_KEY environment variable is not set');
+        }
 
         const systemPrompt = `You are tasked with creating an ELITE, WORLD-CLASS landing page that rivals the best designs from companies like Stripe, Linear, and Notion.
 
@@ -437,25 +446,43 @@ OUTPUT REQUIREMENTS:
         };
 
         return new Promise((resolve, reject) => {
-            // Add timeout for each section generation (45 seconds per section)
+            // Add timeout for each section generation (120 seconds per section for Claude Sonnet 4)
             const timeout = setTimeout(() => {
                 req.destroy();
-                reject(new Error('Section generation timeout after 45 seconds'));
-            }, 45000);
+                reject(new Error('Section generation timeout after 120 seconds'));
+            }, 120000);
 
             const req = https.request(options, (res) => {
                 let data = '';
-                res.on('data', chunk => data += chunk);
+                console.log(`🔍 Claude API Response Status: ${res.statusCode}`);
+                console.log(`🔍 Response Headers:`, res.headers);
+                
+                res.on('data', chunk => {
+                    data += chunk;
+                    console.log(`📥 Received chunk: ${chunk.length} bytes`);
+                });
+                
                 res.on('end', () => {
                     clearTimeout(timeout);
+                    console.log(`✅ Response complete. Total size: ${data.length} bytes`);
+                    
                     if (res.statusCode === 200) {
                         try {
                             const parsed = JSON.parse(data);
-                            resolve(parsed.content[0].text);
+                            console.log(`✅ Successfully parsed response for Claude Sonnet 4`);
+                            if (parsed.content && parsed.content[0] && parsed.content[0].text) {
+                                resolve(parsed.content[0].text);
+                            } else {
+                                console.error('❌ Unexpected response structure:', parsed);
+                                reject(`Unexpected response structure from Claude Sonnet 4`);
+                            }
                         } catch (err) {
+                            console.error('❌ JSON parsing error:', err.message);
+                            console.error('❌ Raw response:', data.substring(0, 500));
                             reject(`JSON error: ${err.message}`);
                         }
                     } else {
+                        console.error(`❌ API error ${res.statusCode}:`, data);
                         reject(`API error: ${res.statusCode} - ${data}`);
                     }
                 });
@@ -463,7 +490,8 @@ OUTPUT REQUIREMENTS:
 
             req.on('error', (err) => {
                 clearTimeout(timeout);
-                reject(err);
+                console.error('❌ Request error:', err.message);
+                reject(new Error(`Request error: ${err.message}`));
             });
             
             req.write(requestData);
