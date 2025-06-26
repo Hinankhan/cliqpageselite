@@ -391,7 +391,7 @@ ${injectedPrompt}`;
         const https = require('https');
         
         const CONFIG = {
-            MODEL: 'claude-3-5-sonnet-20241022',
+            MODEL: 'claude-3-5-sonnet-20250106',
             MAX_TOKENS: 8192,
             TEMPERATURE: 0.3,
             API_VERSION: '2023-06-01',

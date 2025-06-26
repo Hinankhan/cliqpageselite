@@ -320,7 +320,7 @@ Reply with: "Ready to generate ${businessName} landing page."`;
         const timeoutId = setTimeout(() => controller.abort(), 30000); // 30 second timeout
         
         const response = await anthropic.messages.create({
-          model: 'claude-3-5-sonnet-20241022',
+          model: 'claude-3-5-sonnet-20250106',
           max_tokens: maxTokens,
           temperature: 0.7,
           messages: [{ role: 'user', content: prompt }]
@@ -392,7 +392,7 @@ Reply with: "Ready to generate ${businessName} landing page."`;
         const timeoutId = setTimeout(() => controller.abort(), 25000); // 25 second timeout
         
         const response = await anthropic.messages.create({
-          model: 'claude-3-5-sonnet-20241022',
+          model: 'claude-3-5-sonnet-20250106',
           max_tokens: 8192,
           temperature: 0.7,
           messages: messages,
@@ -460,7 +460,7 @@ Reply with: "Ready to generate ${businessName} landing page."`;
     
     for (let attempt = 1; attempt <= maxRetries; attempt++) {
       try {
-        console.log(`🔍 Making Claude API call (attempt ${attempt}/${maxRetries}) with model: claude-3-5-sonnet-20241022`);
+        console.log(`🔍 Making Claude API call (attempt ${attempt}/${maxRetries}) with model: claude-3-5-sonnet-20250106`);
         console.log('🔍 Prompt length:', prompt.length);
         console.log('🔍 Max tokens:', expectJson ? 2000 : 8192);
         console.log('🔍 Target: Use ALL 8192 tokens for comprehensive content');
@@ -470,7 +470,7 @@ Reply with: "Ready to generate ${businessName} landing page."`;
         const timeoutId = setTimeout(() => controller.abort(), 25000); // 25 second timeout
         
         const response = await anthropic.messages.create({
-          model: 'claude-3-5-sonnet-20241022',
+          model: 'claude-3-5-sonnet-20250106',
           max_tokens: expectJson ? 2000 : 8192,
           temperature: 0.7,
           messages: [{ role: 'user', content: prompt }],
@@ -810,7 +810,7 @@ app.post('/api/claude', async (req, res) => {
     });
     
     const response = await anthropic.messages.create({
-      model: model || 'claude-3-5-sonnet-20241022',
+      model: model || 'claude-3-5-sonnet-20250106',
       max_tokens: max_tokens || 8192,
       temperature: temperature || 0.5,
       messages: messages,
