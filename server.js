@@ -1003,10 +1003,13 @@ app.post('/api/generate-elite-landing', async (req, res) => {
   }
 });
 
+
 // SSE endpoint for real-time progress updates
 app.get('/api/progress/:sessionId', (req, res) => {
   const sessionId = req.params.sessionId;
-  console.log(`🔗 SSE Connection established for session: ${sessionId}`);
+  console.log(`🔗 SSE Connection request received for session: ${sessionId}`);
+  console.log(`🔍 Request headers:`, req.headers);
+  console.log(`🔍 User-Agent:`, req.headers['user-agent']);
   
   // Set SSE headers
   res.writeHead(200, {
@@ -1014,8 +1017,11 @@ app.get('/api/progress/:sessionId', (req, res) => {
     'Cache-Control': 'no-cache',
     'Connection': 'keep-alive',
     'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Headers': 'Cache-Control'
+    'Access-Control-Allow-Headers': 'Cache-Control',
+    'X-Accel-Buffering': 'no' // Disable nginx buffering if behind proxy
   });
+  
+  console.log(`✅ SSE Headers sent for session: ${sessionId}`);
 
   // Store the response object for this session
   if (!global.progressConnections) {
@@ -1043,17 +1049,53 @@ app.get('/api/progress/:sessionId', (req, res) => {
   });
 });
 
+// Polling fallback endpoint for progress updates
+app.get('/api/progress-check/:sessionId', (req, res) => {
+  const sessionId = req.params.sessionId;
+  
+  // Check if we have stored progress for this session
+  if (global.sessionProgress && global.sessionProgress.has(sessionId)) {
+    const progress = global.sessionProgress.get(sessionId);
+    res.json({
+      success: true,
+      progress: progress
+    });
+  } else {
+    res.json({
+      success: true,
+      progress: null
+    });
+  }
+});
+
 // Function to send progress updates to a specific session
 function sendProgressUpdate(sessionId, data) {
-  console.log(`📡 Attempting to send progress update to session ${sessionId}:`, data);
+  // Store progress for polling fallback
+  if (!global.sessionProgress) {
+    global.sessionProgress = new Map();
+  }
+  global.sessionProgress.set(sessionId, data);
   
   if (!global.progressConnections) {
-    console.log(`❌ No global.progressConnections found`);
     return;
   }
   
   if (!global.progressConnections.has(sessionId)) {
-    console.log(`❌ Session ${sessionId} not found in connections. Available sessions:`, Array.from(global.progressConnections.keys()));
+    // Try to find with type coercion
+    for (let [key, connection] of global.progressConnections.entries()) {
+      if (key == sessionId) { // Use == for type coercion
+        try {
+          const progressData = {
+            ...data,
+            timestamp: Date.now()
+          };
+          connection.write(`data: ${JSON.stringify(progressData)}\n\n`);
+          return;
+        } catch (error) {
+          global.progressConnections.delete(key);
+        }
+      }
+    }
     return;
   }
   
@@ -1064,11 +1106,8 @@ function sendProgressUpdate(sessionId, data) {
       timestamp: Date.now()
     };
     res.write(`data: ${JSON.stringify(progressData)}\n\n`);
-    console.log(`✅ Progress update sent successfully to ${sessionId}:`, progressData);
   } catch (error) {
-    console.error(`❌ Error sending progress update to ${sessionId}:`, error);
     global.progressConnections.delete(sessionId);
-    console.log(`🗑️ Removed failed connection for session ${sessionId}`);
   }
 }
 

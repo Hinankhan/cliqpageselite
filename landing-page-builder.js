@@ -237,6 +237,8 @@ class LandingPageBuilder {
             this.showError('Failed to generate landing page. Please try again.');
         }
     }
+    
+
 
     getFormData() {
         const pageStyleElement = document.querySelector('input[name="pageStyle"]:checked');
@@ -273,9 +275,13 @@ class LandingPageBuilder {
     showProgress() {
         this.isGenerating = true;
         
-        // Generate session ID for progress tracking
-        this.sessionId = Date.now().toString();
-        console.log(`🆔 Generated session ID: ${this.sessionId}`);
+        // Use existing session ID if available, otherwise generate new one
+        if (!this.sessionId) {
+            this.sessionId = Date.now().toString();
+            console.log(`🆔 Generated NEW session ID: ${this.sessionId}`);
+        } else {
+            console.log(`🆔 Using EXISTING session ID: ${this.sessionId}`);
+        }
         
         // Hide form and show progress section instead
         const formContainer = document.querySelector('form').parentElement;
@@ -310,6 +316,9 @@ class LandingPageBuilder {
             this.eventSource.close();
             this.eventSource = null;
         }
+        
+        // Stop polling if active
+        this.stopPolling();
     }
 
     updateProgress(percentage, text) {
@@ -317,10 +326,12 @@ class LandingPageBuilder {
         this.progressText.textContent = text;
     }
 
-    // New enhanced progress UI methods
+    // Enhanced progress UI methods
     updateProgressUI(percentage, message, icon = '⚡', currentSection = '') {
         // Update progress bar
-        this.progressBar.style.width = `${percentage}%`;
+        if (this.progressBar) {
+            this.progressBar.style.width = `${percentage}%`;
+        }
         
         // Update percentage display
         const progressPercentage = document.getElementById('progressPercentage');
@@ -329,7 +340,9 @@ class LandingPageBuilder {
         }
         
         // Update main message
-        this.progressText.textContent = message;
+        if (this.progressText) {
+            this.progressText.textContent = message;
+        }
         
         // Update current section
         const currentSectionEl = document.getElementById('currentSection');
@@ -407,14 +420,58 @@ class LandingPageBuilder {
         console.log(`📡 Connecting to SSE endpoint: ${progressUrl}`);
         this.eventSource = new EventSource(progressUrl);
         
+        // Check connection status after 2 seconds
+        setTimeout(() => {
+            console.log(`🔍 SSE Connection check after 2s:`, {
+                readyState: this.eventSource.readyState,
+                url: this.eventSource.url
+            });
+            
+            if (this.eventSource.readyState === EventSource.CONNECTING) {
+                console.warn('⚠️ SSE still connecting after 2 seconds - switching to polling fallback');
+                this.eventSource.close();
+                
+                // Switch to polling fallback
+                this.startPollingFallback();
+                
+                // Also try reconnecting once
+                setTimeout(() => {
+                    console.log('🔄 Attempting SSE reconnection...');
+                    try {
+                        this.eventSource = new EventSource(progressUrl);
+                        this.setupSSEHandlers();
+                    } catch (error) {
+                        console.error('❌ SSE reconnection failed:', error);
+                    }
+                }, 1000);
+                
+            } else if (this.eventSource.readyState === EventSource.CLOSED) {
+                console.error('❌ SSE connection failed/closed after 2 seconds');
+            } else if (this.eventSource.readyState === EventSource.OPEN) {
+                console.log('✅ SSE connection is open and ready');
+            }
+        }, 2000);
+        
+        this.setupSSEHandlers();
+    }
+    
+    setupSSEHandlers() {
+        
+        if (!this.eventSource) return;
+        
         this.eventSource.onopen = (event) => {
             console.log('✅ SSE Connection opened successfully', event);
+            console.log('📡 SSE ReadyState after open:', this.eventSource.readyState);
         };
         
         this.eventSource.onmessage = (event) => {
+            console.log('📨 RAW SSE Message received:', event);
+            console.log('📨 SSE Message data:', event.data);
+            console.log('📨 SSE Message type:', event.type);
+            
             try {
                 const data = JSON.parse(event.data);
-                console.log('📨 SSE Message received:', data);
+                console.log('📊 Parsed SSE data:', data);
                 
                 if (data.type === 'connected') {
                     console.log('🔗 SSE Connection confirmed');
@@ -443,12 +500,49 @@ class LandingPageBuilder {
         this.eventSource.onerror = (error) => {
             console.error('❌ SSE Connection error:', error);
             console.log('🔍 SSE ReadyState:', this.eventSource.readyState);
+            console.log('🔍 SSE URL:', this.eventSource.url);
             
             // ReadyState: 0 = CONNECTING, 1 = OPEN, 2 = CLOSED
             if (this.eventSource.readyState === EventSource.CLOSED) {
                 console.log('🔌 SSE Connection closed, attempting to reconnect...');
+            } else if (this.eventSource.readyState === EventSource.CONNECTING) {
+                console.log('🔄 SSE Still connecting...');
             }
         };
+    }
+
+    startPollingFallback() {
+        console.log('🔄 Starting polling fallback for progress updates');
+        
+        this.pollingInterval = setInterval(async () => {
+            try {
+                const response = await fetch(`/api/progress-check/${this.sessionId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data.progress) {
+                        this.updateProgressUI(
+                            data.progress.percentage || 0,
+                            data.progress.message || 'Processing...',
+                            data.progress.icon || '⚡',
+                            data.progress.currentSection || ''
+                        );
+                        
+                        if (data.progress.percentage >= 100) {
+                            this.stopPolling();
+                        }
+                    }
+                }
+            } catch (error) {
+                console.error('❌ Polling error:', error);
+            }
+        }, 1000); // Poll every second
+    }
+    
+    stopPolling() {
+        if (this.pollingInterval) {
+            clearInterval(this.pollingInterval);
+            this.pollingInterval = null;
+        }
     }
 
     updateFunFact(percentage) {

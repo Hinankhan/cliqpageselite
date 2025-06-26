@@ -88,13 +88,56 @@ function initializePricingToggle() {
 }
 ```
 
-MOBILE MENU SPECIFIC REQUIREMENTS:
-- Target hamburger button and mobile menu using data attributes
-- Toggle 'hidden' class for show/hide functionality
+MOBILE MENU SPECIFIC REQUIREMENTS (CRITICAL):
+- Target hamburger button and mobile menu using data-mobile-menu attributes
+- Toggle 'hidden' class for show/hide functionality  
 - Add smooth transitions (transform, opacity)
 - Close menu when clicking on navigation links
 - Close menu when clicking outside the menu area
 - Handle responsive behavior (auto-close on resize to desktop)
+- MANDATORY: Implement proper vertical menu layout with good spacing
+- MANDATORY: Each menu item must be on separate line with py-3 px-4 spacing
+- MANDATORY: Full-width dropdown with professional styling
+
+MOBILE MENU IMPLEMENTATION (MANDATORY):
+```javascript
+// Essential mobile menu functionality
+function initializeMobileMenu() {
+    const hamburgerBtn = document.querySelector('button[data-mobile-menu]');
+    const mobileMenu = document.querySelector('div[data-mobile-menu]');
+    
+    if (!hamburgerBtn || !mobileMenu) return;
+    
+    // Toggle mobile menu
+    hamburgerBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        mobileMenu.classList.toggle('hidden');
+    });
+    
+    // Close menu when clicking on links
+    const menuLinks = mobileMenu.querySelectorAll('a');
+    menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (!hamburgerBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+            mobileMenu.classList.add('hidden');
+        }
+    });
+    
+    // Close menu on window resize to desktop
+    window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) {
+            mobileMenu.classList.add('hidden');
+        }
+    });
+}
+```
 
 CAROUSEL SPECIFIC REQUIREMENTS:
 - MUST use 0-based indexing system (start from 0, not 1)
@@ -124,5 +167,16 @@ IMPLEMENTATION GUIDELINES:
 - Implement responsive mobile menu with smooth animations
 - Handle navigation to all sections (problem, how-it-works, features, product-showcase, value-props, pricing, contact)
 - **MANDATORY: Call initializePricingToggle() in DOMContentLoaded event**
+- **MANDATORY: Call initializeMobileMenu() in DOMContentLoaded event**
 
-OUTPUT FORMAT: Single <script> tag with all functionality consolidated and well-organized. MUST include working pricing toggle functionality. 
+INITIALIZATION REQUIREMENTS (CRITICAL):
+```javascript
+// MANDATORY: Initialize all functionality on page load
+document.addEventListener('DOMContentLoaded', function() {
+    initializePricingToggle();
+    initializeMobileMenu();
+    // ... other initialization functions
+});
+```
+
+OUTPUT FORMAT: Single <script> tag with all functionality consolidated and well-organized. MUST include working pricing toggle functionality AND mobile menu functionality. 

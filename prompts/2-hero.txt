@@ -23,13 +23,36 @@ Create a sophisticated, modern hero section with:
 MOBILE RESPONSIVE NAVIGATION:
 - Company name "{companyName}" with modern logo styling
 - Desktop: Horizontal navigation with hover effects and smooth underlines
-- Mobile: Elegant hamburger menu (☰) with smooth slide-down animation
+- Mobile: Professional hamburger menu (☰) with smooth slide-down animation
 - Glass-morphism navigation bar with backdrop blur
 - Sticky header with background blur on scroll
 - Professional spacing and typography
-- CRITICAL: Mobile menu MUST show items vertically when opened
+
+MOBILE MENU REQUIREMENTS (CRITICAL):
+- MANDATORY: Mobile menu MUST show items vertically in a dropdown
+- MANDATORY: Each menu item on separate line with proper spacing (py-3 px-4)
+- MANDATORY: Full-width mobile menu dropdown (w-full)
+- MANDATORY: Professional styling with borders and hover effects
+- MANDATORY: Hamburger menu button with data-mobile-menu attribute
+- MANDATORY: Mobile menu container with data-mobile-menu attribute for JavaScript
+- MANDATORY: Hidden by default (add 'hidden' class to mobile menu)
+- MANDATORY: Smooth animations (transform, opacity transitions)
+
+MOBILE MENU STRUCTURE EXAMPLE:
+```html
+<!-- Mobile hamburger button -->
+<button data-mobile-menu class="md:hidden">☰</button>
+
+<!-- Mobile menu dropdown (hidden by default) -->
+<div data-mobile-menu class="hidden md:hidden absolute top-full left-0 right-0 bg-white shadow-lg border-t">
+  <a href="#problem" class="block py-3 px-4 border-b hover:bg-gray-50">Problem</a>
+  <a href="#features" class="block py-3 px-4 border-b hover:bg-gray-50">Features</a>
+  <!-- etc... -->
+</div>
+```
+
 - CRITICAL: Use proper mobile padding (px-4 sm:px-6 lg:px-8) to prevent white space
-- CRITICAL: Ensure hamburger menu has data-mobile-menu attribute for JavaScript targeting
+- CRITICAL: Ensure professional vertical menu layout with good spacing
 
 Navigation links MUST use these exact href values:
 - href="#problem" (Problem/Challenge)
