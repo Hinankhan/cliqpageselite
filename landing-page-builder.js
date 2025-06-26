@@ -275,6 +275,7 @@ class LandingPageBuilder {
         
         // Generate session ID for progress tracking
         this.sessionId = Date.now().toString();
+        console.log(`🆔 Generated session ID: ${this.sessionId}`);
         
         // Hide form and show progress section instead
         const formContainer = document.querySelector('form').parentElement;
@@ -284,6 +285,7 @@ class LandingPageBuilder {
         
         // Initialize progress UI
         this.updateProgressUI(0, 'Connecting to AI...', '🚀');
+        console.log('🎨 Progress UI initialized');
         
         // Start progress tracking
         this.startProgressTracking();
@@ -387,22 +389,40 @@ class LandingPageBuilder {
     }
 
     startProgressTracking() {
-        if (!this.sessionId) return;
+        if (!this.sessionId) {
+            console.error('❌ No sessionId available for progress tracking');
+            return;
+        }
+        
+        console.log(`🔗 Starting progress tracking for session: ${this.sessionId}`);
         
         // Close existing connection
         if (this.eventSource) {
+            console.log('🔌 Closing existing SSE connection');
             this.eventSource.close();
         }
         
         // Start Server-Sent Events connection
-        this.eventSource = new EventSource(`/api/progress/${this.sessionId}`);
+        const progressUrl = `/api/progress/${this.sessionId}`;
+        console.log(`📡 Connecting to SSE endpoint: ${progressUrl}`);
+        this.eventSource = new EventSource(progressUrl);
+        
+        this.eventSource.onopen = (event) => {
+            console.log('✅ SSE Connection opened successfully', event);
+        };
         
         this.eventSource.onmessage = (event) => {
             try {
                 const data = JSON.parse(event.data);
-                console.log('Progress update:', data);
+                console.log('📨 SSE Message received:', data);
+                
+                if (data.type === 'connected') {
+                    console.log('🔗 SSE Connection confirmed');
+                    return;
+                }
                 
                 if (data.type === 'progress') {
+                    console.log(`📊 Progress update: ${data.percentage}% - ${data.message}`);
                     this.updateProgressUI(
                         data.percentage || 0,
                         data.message || 'Processing...',
@@ -412,14 +432,22 @@ class LandingPageBuilder {
                     
                     // Update fun facts based on progress
                     this.updateFunFact(data.percentage);
+                } else {
+                    console.log('📨 Unknown message type:', data.type, data);
                 }
             } catch (error) {
-                console.error('Error parsing progress data:', error);
+                console.error('❌ Error parsing SSE data:', error, 'Raw data:', event.data);
             }
         };
         
         this.eventSource.onerror = (error) => {
-            console.error('Progress tracking error:', error);
+            console.error('❌ SSE Connection error:', error);
+            console.log('🔍 SSE ReadyState:', this.eventSource.readyState);
+            
+            // ReadyState: 0 = CONNECTING, 1 = OPEN, 2 = CLOSED
+            if (this.eventSource.readyState === EventSource.CLOSED) {
+                console.log('🔌 SSE Connection closed, attempting to reconnect...');
+            }
         };
     }
 
@@ -449,6 +477,9 @@ class LandingPageBuilder {
                 ...formData,
                 sessionId: this.sessionId
             };
+            
+            console.log(`🚀 Starting generation with session ID: ${this.sessionId}`);
+            console.log('📝 Form data keys:', Object.keys(formDataWithSession));
             
             const response = await fetch('/api/generate-landing-page', {
                 method: 'POST',

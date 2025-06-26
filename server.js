@@ -174,8 +174,22 @@ async function generateLandingPage(formData, sessionId = null) {
       }
       
       const eliteGen = require('./elite-multi-gen-api');
+      
+      // Send immediate test progress update
+      if (sessionId) {
+        console.log(`🧪 Sending test progress update to session: ${sessionId}`);
+        sendProgressUpdate(sessionId, {
+          type: 'progress',
+          stage: 'test',
+          message: 'Testing progress connection...',
+          percentage: 5,
+          currentSection: 'Connection Test',
+          icon: '🧪'
+        });
+      }
+      
       result = await eliteGen.generateWithProgress(eliteInput, (progress, message, sectionName) => {
-        console.log(`📊 Progress: ${progress}% - ${message}`);
+        console.log(`📊 Elite Progress Callback: ${progress}% - ${message} (Section: ${sectionName})`);
         
         // Send real-time progress updates
         if (sessionId) {
@@ -992,6 +1006,7 @@ app.post('/api/generate-elite-landing', async (req, res) => {
 // SSE endpoint for real-time progress updates
 app.get('/api/progress/:sessionId', (req, res) => {
   const sessionId = req.params.sessionId;
+  console.log(`🔗 SSE Connection established for session: ${sessionId}`);
   
   // Set SSE headers
   res.writeHead(200, {
@@ -1007,35 +1022,53 @@ app.get('/api/progress/:sessionId', (req, res) => {
     global.progressConnections = new Map();
   }
   global.progressConnections.set(sessionId, res);
+  console.log(`📊 Active SSE connections: ${global.progressConnections.size}`);
 
   // Send initial connection confirmation
-  res.write(`data: ${JSON.stringify({
+  const initialMessage = {
     type: 'connected',
     message: 'Progress tracking connected',
     timestamp: Date.now()
-  })}\n\n`);
+  };
+  res.write(`data: ${JSON.stringify(initialMessage)}\n\n`);
+  console.log(`✅ Initial SSE message sent to ${sessionId}:`, initialMessage);
 
   // Clean up on client disconnect
   req.on('close', () => {
+    console.log(`🔌 SSE Connection closed for session: ${sessionId}`);
     if (global.progressConnections) {
       global.progressConnections.delete(sessionId);
+      console.log(`📊 Remaining SSE connections: ${global.progressConnections.size}`);
     }
   });
 });
 
 // Function to send progress updates to a specific session
 function sendProgressUpdate(sessionId, data) {
-  if (global.progressConnections && global.progressConnections.has(sessionId)) {
-    const res = global.progressConnections.get(sessionId);
-    try {
-      res.write(`data: ${JSON.stringify({
-        ...data,
-        timestamp: Date.now()
-      })}\n\n`);
-    } catch (error) {
-      console.error('Error sending progress update:', error);
-      global.progressConnections.delete(sessionId);
-    }
+  console.log(`📡 Attempting to send progress update to session ${sessionId}:`, data);
+  
+  if (!global.progressConnections) {
+    console.log(`❌ No global.progressConnections found`);
+    return;
+  }
+  
+  if (!global.progressConnections.has(sessionId)) {
+    console.log(`❌ Session ${sessionId} not found in connections. Available sessions:`, Array.from(global.progressConnections.keys()));
+    return;
+  }
+  
+  const res = global.progressConnections.get(sessionId);
+  try {
+    const progressData = {
+      ...data,
+      timestamp: Date.now()
+    };
+    res.write(`data: ${JSON.stringify(progressData)}\n\n`);
+    console.log(`✅ Progress update sent successfully to ${sessionId}:`, progressData);
+  } catch (error) {
+    console.error(`❌ Error sending progress update to ${sessionId}:`, error);
+    global.progressConnections.delete(sessionId);
+    console.log(`🗑️ Removed failed connection for session ${sessionId}`);
   }
 }
 
