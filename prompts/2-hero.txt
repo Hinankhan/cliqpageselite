@@ -27,6 +27,9 @@ MOBILE RESPONSIVE NAVIGATION:
 - Glass-morphism navigation bar with backdrop blur
 - Sticky header with background blur on scroll
 - Professional spacing and typography
+- CRITICAL: Mobile menu MUST show items vertically when opened
+- CRITICAL: Use proper mobile padding (px-4 sm:px-6 lg:px-8) to prevent white space
+- CRITICAL: Ensure hamburger menu has data-mobile-menu attribute for JavaScript targeting
 
 Navigation links MUST use these exact href values:
 - href="#problem" (Problem/Challenge)
@@ -79,9 +82,12 @@ Navigation links MUST use these exact href values:
 📱 RESPONSIVE DESIGN:
 - Mobile-first approach with perfect scaling
 - Breakpoint-specific optimizations (sm, md, lg, xl, 2xl)
-- Touch-friendly interactive elements
+- Touch-friendly interactive elements (minimum 44px touch targets)
 - Optimized image and animation performance
 - Proper font scaling and spacing
+- CRITICAL: Use container classes with proper mobile padding (px-4 sm:px-6 lg:px-8)
+- CRITICAL: Prevent horizontal scroll with overflow-x-hidden
+- CRITICAL: Ensure no white space issues on mobile devices
 
 🔧 TECHNICAL REQUIREMENTS:
 - Use ONLY Tailwind CSS classes

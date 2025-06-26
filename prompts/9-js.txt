@@ -13,7 +13,16 @@ ANALYZE THE PROVIDED HTML STRUCTURE AND CREATE VANILLA JAVASCRIPT FOR:
    - Header hide/show on scroll
    - Mobile-responsive behavior
 
-2. **CAROUSEL/SLIDER FUNCTIONALITY** 
+2. **PRICING TOGGLE FUNCTIONALITY** (CRITICAL - MUST WORK)
+   - MANDATORY: Handle monthly/yearly pricing toggle switches
+   - Target elements with data-pricing-toggle="monthly" and data-pricing-toggle="yearly"
+   - Show/hide prices with data-price-monthly and data-price-yearly attributes
+   - Smooth transitions between pricing modes
+   - Update toggle button states and styling
+   - Calculate and display savings for yearly plans
+   - ENSURE CLICK EVENTS WORK ON ALL DEVICES (mobile, tablet, desktop)
+
+3. **CAROUSEL/SLIDER FUNCTIONALITY** 
    - Pure vanilla JS carousel for testimonials (NO Swiper or external libraries)
    - CRITICAL: Use 0-based indexing (data-slide="0,1,2" and data-carousel-dot="0,1,2")
    - Initialize first slide properly with showSlide(0)
@@ -22,22 +31,62 @@ ANALYZE THE PROVIDED HTML STRUCTURE AND CREATE VANILLA JAVASCRIPT FOR:
    - Touch/swipe support for mobile
    - Proper dot state management (active/inactive)
 
-3. **INTERACTIVE ELEMENTS**
+4. **INTERACTIVE ELEMENTS**
    - FAQ accordion (one open at a time)
-   - Pricing toggle (monthly/yearly)
    - Contact form validation and submission
    - Loading states and success messages
+   - Button hover effects and active states
 
-4. **ANIMATIONS & EFFECTS**
+5. **MOBILE RESPONSIVENESS & TOUCH EVENTS**
+   - Touch-friendly click events (touchstart, touchend)
+   - Proper mobile viewport handling
+   - Swipe gestures for carousels
+   - Mobile-optimized interactions
+   - Prevent zoom on input focus (mobile)
+
+6. **ANIMATIONS & EFFECTS**
    - Intersection Observer for scroll animations
    - Smooth reveal animations
    - Hover effects and micro-interactions
 
-5. **FORM HANDLING**
+7. **FORM HANDLING**
    - Real-time validation
    - Error states
    - Success feedback
    - Loading spinners
+
+PRICING TOGGLE IMPLEMENTATION (MANDATORY):
+```javascript
+// Essential pricing toggle functionality
+function initializePricingToggle() {
+    const monthlyToggle = document.querySelector('[data-pricing-toggle="monthly"]');
+    const yearlyToggle = document.querySelector('[data-pricing-toggle="yearly"]');
+    const monthlyPrices = document.querySelectorAll('[data-price-monthly]');
+    const yearlyPrices = document.querySelectorAll('[data-price-yearly]');
+    
+    if (!monthlyToggle || !yearlyToggle) return;
+    
+    // Set initial state (monthly active)
+    monthlyToggle.classList.add('active');
+    yearlyPrices.forEach(price => price.classList.add('hidden'));
+    
+    // Monthly toggle click
+    monthlyToggle.addEventListener('click', () => {
+        monthlyToggle.classList.add('active');
+        yearlyToggle.classList.remove('active');
+        monthlyPrices.forEach(price => price.classList.remove('hidden'));
+        yearlyPrices.forEach(price => price.classList.add('hidden'));
+    });
+    
+    // Yearly toggle click
+    yearlyToggle.addEventListener('click', () => {
+        yearlyToggle.classList.add('active');
+        monthlyToggle.classList.remove('active');
+        yearlyPrices.forEach(price => price.classList.remove('hidden'));
+        monthlyPrices.forEach(price => price.classList.add('hidden'));
+    });
+}
+```
 
 MOBILE MENU SPECIFIC REQUIREMENTS:
 - Target hamburger button and mobile menu using data attributes
@@ -62,6 +111,7 @@ TECHNICAL REQUIREMENTS:
 - **Error handling** for missing elements
 - **Accessibility friendly** with proper ARIA attributes
 - **Cross-browser compatible**
+- **MUST INCLUDE initializePricingToggle() function and call it**
 
 IMPLEMENTATION GUIDELINES:
 - Analyze actual HTML structure provided above
@@ -73,5 +123,6 @@ IMPLEMENTATION GUIDELINES:
 - Ensure all carousels work properly with correct indexing
 - Implement responsive mobile menu with smooth animations
 - Handle navigation to all sections (problem, how-it-works, features, product-showcase, value-props, pricing, contact)
+- **MANDATORY: Call initializePricingToggle() in DOMContentLoaded event**
 
-OUTPUT FORMAT: Single <script> tag with all functionality consolidated and well-organized. 
+OUTPUT FORMAT: Single <script> tag with all functionality consolidated and well-organized. MUST include working pricing toggle functionality. 

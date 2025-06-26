@@ -88,11 +88,29 @@ class EliteMultiGenAPI {
             
             for (let i = 0; i < htmlPrompts.length; i++) {
                 const filename = htmlPrompts[i];
-                const sectionName = filename.replace(/^\d+(\.\d+)?-/, '').replace('.txt', '');
+                const rawSectionName = filename.replace(/^\d+(\.\d+)?-/, '').replace('.txt', '');
+                
+                // Create user-friendly section names
+                const sectionNameMap = {
+                    'head': 'Page Structure & Styling',
+                    'hero': 'Hero Section',
+                    'problem': 'Problem Statement',
+                    'features': 'Features Section',
+                    'how-it-works': 'How It Works',
+                    'testimonials': 'Customer Testimonials',
+                    'product-showcase': 'Product Showcase',
+                    'pricing': 'Pricing Plans',
+                    'value-props': 'Value Propositions',
+                    'faq': 'FAQ Section',
+                    'contact': 'Contact Section',
+                    'footer': 'Footer'
+                };
+                
+                const friendlyName = sectionNameMap[rawSectionName] || rawSectionName;
                 
                 if (progressCallback) {
                     const progress = 10 + (i / totalSections) * 70;
-                    progressCallback(progress, `Generating ${sectionName} section...`, sectionName);
+                    progressCallback(progress, `Crafting ${friendlyName}...`, friendlyName);
                 }
                 
                 try {
@@ -101,6 +119,12 @@ class EliteMultiGenAPI {
                     
                     // Inject context into prompt
                     const contextualPrompt = this.injectContextIntoPrompt(prompt, context);
+                    
+                    // Update progress to show AI is working on this section
+                    if (progressCallback) {
+                        const progress = 12 + (i / totalSections) * 70;
+                        progressCallback(progress, `AI is designing ${friendlyName}...`, friendlyName);
+                    }
                     
                     console.log(`🔨 Generating ${filename}...`);
                     const html = await this.sendClaudeRequest(contextualPrompt, context);
@@ -125,7 +149,7 @@ class EliteMultiGenAPI {
             }
             
             // Generate JavaScript
-            if (progressCallback) progressCallback(85, 'Generating JavaScript functionality...', 'JavaScript');
+            if (progressCallback) progressCallback(85, 'Adding Interactive Features...', 'Interactive Features');
             
             const jsPromptFile = promptFiles.find(f => f.startsWith('9-js'));
             if (jsPromptFile) {
@@ -146,18 +170,22 @@ CRITICAL: Analyze the HTML structure above and create JavaScript that works with
                 const contextualJsPrompt = this.injectContextIntoPrompt(enhancedJsPrompt, context);
                 
                 try {
+                    if (progressCallback) progressCallback(88, 'Building interactive functionality...', 'Interactive Features');
+                    
                     const jsCode = await this.sendClaudeRequest(contextualJsPrompt, context);
                     const jsPath = path.join(this.sectionsDir, jsPromptFile.replace('.txt', '.html'));
                     fs.writeFileSync(jsPath, jsCode.trim());
                     jsSection = jsCode.trim();
                     console.log(`✅ Generated: ${jsPromptFile}`);
+                    
+                    if (progressCallback) progressCallback(92, 'Interactive features completed!', 'Interactive Features');
                 } catch (err) {
                     console.error(`❌ Error with ${jsPromptFile}:`, err);
                     throw err;
                 }
             }
             
-            if (progressCallback) progressCallback(95, 'Assembling final landing page...', 'Final Assembly');
+            if (progressCallback) progressCallback(95, 'Assembling Your Landing Page...', 'Final Assembly');
             
             // Stitch final HTML
             finalHTML = headSection + bodyContent + '\n' + jsSection + '\n</body>\n</html>';
@@ -167,7 +195,7 @@ CRITICAL: Analyze the HTML structure above and create JavaScript that works with
             const finalFile = path.join(this.finalDir, fileName);
             fs.writeFileSync(finalFile, finalHTML);
             
-            if (progressCallback) progressCallback(100, 'Generation complete!', 'Complete');
+            if (progressCallback) progressCallback(100, '🎉 Your Landing Page is Ready!', 'Complete');
             
             console.log('🏁 Final HTML created:', finalFile);
             

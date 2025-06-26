@@ -69,18 +69,24 @@ Each pricing tier should include:
 - Clear next steps and onboarding hints
 
 📱 RESPONSIVE DESIGN:
-- Mobile: Stacked cards with easy comparison
+- Mobile: Stacked cards with easy comparison and proper padding (px-4 sm:px-6)
 - Tablet: 2-column layout with proper spacing
 - Desktop: 3-column grid with perfect alignment
-- Enhanced touch targets for mobile CTA buttons
+- Enhanced touch targets for mobile CTA buttons (minimum 44px)
+- CRITICAL: No white space issues on mobile devices
+- CRITICAL: Proper container padding to prevent edge overflow
+- CRITICAL: Touch-friendly pricing toggle buttons
 
-🔧 TOGGLE FUNCTIONALITY:
+🔧 TOGGLE FUNCTIONALITY (CRITICAL - MUST WORK):
 Monthly/Yearly pricing toggle with:
-- Toggle buttons: data-pricing-toggle="monthly" and data-pricing-toggle="yearly"
-- Monthly prices: data-price-monthly attribute
-- Yearly prices: data-price-yearly attribute (hidden by default)
+- MANDATORY: Toggle buttons with data-pricing-toggle="monthly" and data-pricing-toggle="yearly" attributes
+- MANDATORY: Monthly prices with data-price-monthly attribute (visible by default)
+- MANDATORY: Yearly prices with data-price-yearly attribute (hidden by default with 'hidden' class)
+- MANDATORY: Clickable toggle buttons that work on all devices (mobile, tablet, desktop)
 - Smooth transition animations between pricing modes
-- Savings calculations and highlights
+- Savings calculations and highlights ("Save 20%" badges)
+- Active state styling for selected toggle option
+- Touch-friendly toggle buttons (minimum 44px height for mobile)
 
 🎨 STYLE INTEGRATION:
 - Tone: {tone} - Professional yet approachable messaging

@@ -4,18 +4,78 @@ STRUCTURE REQUIRED:
 - Complete HTML5 DOCTYPE declaration
 - <html> and <head> opening tags
 - Meta tags for SEO, responsive viewport, theme-color using {primaryColor}
+- CRITICAL MOBILE VIEWPORT: <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 - Title: "{companyName} - {businessDescription}"
 - Link to Google Fonts (professional fonts like Inter, Poppins)
 - IMPORTANT: Include Tailwind CSS from CDN for utility classes
 - Complete <style> tag with ALL additional CSS for the entire page including:
   - CSS root variables using {primaryColor} and {secondaryColor}
+  - MOBILE-FIRST responsive design with proper spacing
+  - Prevent white space issues: html, body { margin: 0; padding: 0; overflow-x: hidden; }
+  - Container max-widths and responsive padding
   - Any custom styles that Tailwind doesn't cover
   - Smooth scroll behavior and enhanced animations
   - Custom keyframes: fade-in, slide-up, float, shimmer, glow
   - Form styles if {formIntegration} is yes
+  - Mobile-optimized spacing and typography
+  - Touch-friendly button sizes (min-height: 44px)
   - Any section-specific custom styles not covered by Tailwind
 - Close </head> and open <body>
 
+MOBILE RESPONSIVENESS REQUIREMENTS:
+- Ensure all sections have proper mobile padding (px-4 sm:px-6 lg:px-8)
+- Prevent horizontal scroll on mobile devices
+- Optimize touch targets for mobile (minimum 44px touch targets)
+- Responsive typography scaling
+- Mobile-first breakpoint approach
+
+CRITICAL CSS ADDITIONS FOR MOBILE:
+```css
+/* Prevent white space and overflow issues */
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    width: 100%;
+}
+
+/* Mobile-first responsive containers */
+.container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+@media (min-width: 640px) {
+    .container { padding: 0 1.5rem; }
+}
+
+@media (min-width: 1024px) {
+    .container { padding: 0 2rem; }
+}
+
+/* Touch-friendly buttons */
+button, .btn {
+    min-height: 44px;
+    min-width: 44px;
+    touch-action: manipulation;
+}
+
+/* Prevent zoom on input focus (mobile) */
+input, textarea, select {
+    font-size: 16px;
+}
+
+/* Mobile menu improvements */
+@media (max-width: 767px) {
+    .mobile-menu {
+        width: 100vw;
+        left: 0;
+        right: 0;
+    }
+}
+```
+
 CRITICAL: Include Tailwind CSS CDN link before the custom <style> tag so utility classes work properly. The sections will use Tailwind classes extensively.
 
-The CSS should be complete and ready for all sections. Use {primaryColor} and {secondaryColor} consistently throughout.
+The CSS should be complete and ready for all sections. Use {primaryColor} and {secondaryColor} consistently throughout. Ensure perfect mobile responsiveness with no white space issues.
