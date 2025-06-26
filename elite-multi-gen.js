@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const CONFIG = {
-  MODEL: 'claude-3-5-sonnet-20250106',
+  MODEL: 'claude-sonnet-4-20250514',
   MAX_TOKENS: 8192,
   TEMPERATURE: 0.3,
   API_VERSION: '2023-06-01',

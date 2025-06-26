@@ -4,7 +4,7 @@ A powerful, AI-driven landing page generator that creates professional, conversi
 
 ## ✨ Features
 
-- **🤖 Advanced AI Integration**: Powered by Claude 3.5 Sonnet for superior content generation
+- **🤖 Advanced AI Integration**: Powered by Claude Sonnet 4 for superior content generation
 - **📱 Fully Responsive**: Mobile-first design with Tailwind CSS
 - **⚡ Conversion Optimized**: Built specifically for lead generation and sales
 - **🎨 Dynamic Branding**: Custom colors and intelligent design variations
@@ -15,7 +15,7 @@ A powerful, AI-driven landing page generator that creates professional, conversi
 
 - **Frontend**: HTML, Tailwind CSS, Vanilla JavaScript
 - **Backend**: Node.js, Express
-- **AI**: Claude 3.5 Sonnet (Anthropic)
+- **AI**: Claude Sonnet 4 (Anthropic)
 - **Deployment**: Railway
 - **Architecture**: Modular, scalable design
 
