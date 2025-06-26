@@ -475,7 +475,8 @@ class LandingPageBuilder {
     }
 
     handleGenerationComplete(result) {
-        this.hideProgress();
+        // Hide progress section
+        this.progressSection.classList.add('hidden');
         
         if (result.success) {
             this.showResults(result);
@@ -485,6 +486,7 @@ class LandingPageBuilder {
     }
 
     showResults(result) {
+        // Show results in the same location as progress (not below form)
         this.resultsSection.classList.remove('hidden');
         
         // Set up preview and download links
@@ -497,11 +499,57 @@ class LandingPageBuilder {
             downloadBtn.download = result.fileName;
         }
         
-        // Smooth scroll to results
+        // Setup "Generate Another Page" functionality
+        this.setupGenerateAnotherButton();
+        
+        // Smooth scroll to results (same location as progress was)
         this.resultsSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
         
         // Show success message
         this.showSuccess('🎉 Your landing page has been generated successfully!');
+    }
+
+    setupGenerateAnotherButton() {
+        const generateAnotherBtn = document.getElementById('generateAnotherBtn');
+        if (generateAnotherBtn) {
+            generateAnotherBtn.onclick = () => {
+                // Hide results section
+                this.resultsSection.classList.add('hidden');
+                
+                // Show form again
+                const formContainer = document.querySelector('form').parentElement;
+                formContainer.classList.remove('hidden');
+                
+                // Reset form
+                document.getElementById('landingPageForm').reset();
+                
+                // Reset color pickers to default values
+                document.getElementById('primaryColor').value = '#6366f1';
+                document.getElementById('primaryColorHex').value = '#6366f1';
+                document.getElementById('secondaryColor').value = '#10b981';
+                document.getElementById('secondaryColorHex').value = '#10b981';
+                
+                // Clear any validation errors
+                this.clearAllErrors();
+                
+                // Remove radio button selections
+                const radioOptions = document.querySelectorAll('.radio-option');
+                radioOptions.forEach(option => option.classList.remove('selected'));
+                
+                // Smooth scroll back to form
+                formContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                
+                // Reset generation state
+                this.isGenerating = false;
+                this.sessionId = null;
+                
+                // Close any existing progress connections
+                if (this.eventSource) {
+                    this.eventSource.close();
+                    this.eventSource = null;
+                }
+            };
+        }
     }
 
     showError(message) {
