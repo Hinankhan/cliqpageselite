@@ -1,0 +1,251 @@
+You are an ELITE LANDING PAGE ARCHITECT tasked with creating a WORLD-CLASS, COMPLETE landing page for {companyName}. Generate a FULL, PRODUCTION-READY HTML landing page that rivals the best SaaS companies like Stripe, Linear, Notion, and Apple.
+
+## BUSINESS CONTEXT:
+- Company: {companyName}
+- Business Description: {businessDescription}
+- Target Market: {targetMarket}
+- Primary Goal: {primaryGoal}
+- Tone: {tone}
+- Design Style: {designStyle}
+- Layout Style: {layoutStyle}
+- Primary Color: {primaryColor}
+- Secondary Color: {secondaryColor}
+- Primary CTA: {ctaPrimary}
+- Secondary CTA: {ctaSecondary}
+- Contact: {businessEmail}, {phoneNumber}
+- Website: {websiteUrl}
+
+## COMPLETE LANDING PAGE STRUCTURE:
+
+### 1. HTML DOCUMENT HEAD
+Generate complete HTML5 structure with:
+- DOCTYPE, html, head tags
+- SEO-optimized meta tags with company info
+- CRITICAL MOBILE VIEWPORT: `<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">`
+- Title: "{companyName} - {businessDescription}"
+- Google Fonts (Inter, Poppins) and Tailwind CSS CDN
+- Complete CSS in <style> tag including:
+  - CSS root variables using {primaryColor} and {secondaryColor}
+  - Mobile-first responsive design
+  - Prevent white space: `html, body { margin: 0; padding: 0; overflow-x: hidden; }`
+  - Container systems, animations, form styles
+  - Custom keyframes: fade-in, slide-up, float, shimmer, glow
+  - Touch-friendly buttons (min-height: 44px)
+  - Mobile-optimized spacing and typography
+
+### 2. ELITE HERO SECTION
+Create a stunning hero section with:
+- **Glass-morphism navigation** with company name and smooth mobile hamburger menu
+- **Navigation links**: #problem, #how-it-works, #features, #product-showcase, #value-props, #pricing, #contact
+- **MOBILE MENU REQUIREMENTS**:
+  - Hamburger button with `data-mobile-menu` attribute
+  - Mobile dropdown with `data-mobile-menu` attribute (hidden by default)
+  - Vertical menu items with proper spacing (py-3 px-4)
+  - Professional styling with hover effects
+- **Hero Content**:
+  - Compelling headline with gradient text effects
+  - Clear value proposition for {targetMarket}
+  - Primary CTA: "{ctaPrimary}" with stunning button design
+  - Secondary CTA: "{ctaSecondary}" with elegant styling
+  - Floating geometric elements and animations
+  - Trust indicators and social proof elements
+
+### 3. PROBLEM SECTION (id="problem")
+- Emotional problem-focused content highlighting challenges {targetMarket} faces
+- 2-3 pain points related to {businessDescription} and {primaryGoal}
+- Problem-focused icons and visual elements
+- Statistics emphasizing problem severity
+- Empathetic language matching {tone}
+
+### 4. HOW IT WORKS SECTION (id="how-it-works")
+- Clear 3-4 step process showing how {companyName} solves problems
+- Visual step indicators with modern design
+- Process flow with icons and descriptions
+- Benefits at each step targeting {primaryGoal}
+
+### 5. FEATURES SECTION (id="features")
+- 3-6 glass-morphism feature cards with modern design
+- Professional SVG icons with {primaryColor} styling
+- Feature titles with gradient effects
+- Compelling descriptions for {targetMarket}
+- Hover animations and micro-interactions
+- Responsive grid layout
+
+### 6. PRODUCT SHOWCASE SECTION (id="product-showcase")
+- Visual product demonstration area
+- Screenshots or mockups (CSS-generated placeholders)
+- Feature callouts and annotations
+- Interactive elements showcasing capabilities
+
+### 7. VALUE PROPOSITIONS SECTION (id="value-props")
+- Key value propositions highlighting {primaryGoal} benefits
+- Benefit-focused messaging for {targetMarket}
+- Visual hierarchy with icons and graphics
+- Quantifiable results and outcomes
+
+### 8. TESTIMONIALS/SOCIAL PROOF SECTION
+- Logo wall with 6 recognizable brand names
+- **Testimonial carousel** with proper structure:
+  - Container: `data-carousel="testimonials"`
+  - Slide container: `data-carousel-container`
+  - Slides: `data-slide="0"`, `data-slide="1"`, `data-slide="2"` (0-based indexing)
+  - Dots: `data-carousel-dot="0"`, `data-carousel-dot="1"`, `data-carousel-dot="2"`
+  - First dot active by default
+- 3 realistic testimonials with names, titles, avatars
+- Professional carousel design
+
+### 9. PRICING SECTION (id="pricing")
+- **CONVERSION-OPTIMIZED PRICING** with 3 tiers
+- **CRITICAL PRICING TOGGLE**:
+  - Monthly toggle: `data-pricing-toggle="monthly"`
+  - Yearly toggle: `data-pricing-toggle="yearly"`
+  - Monthly prices: `data-price-monthly` (visible by default)
+  - Yearly prices: `data-price-yearly` (hidden by default with 'hidden' class)
+  - Touch-friendly toggle buttons (minimum 44px)
+- Glass-morphism pricing cards with premium styling
+- "Most Popular" badge on middle tier
+- Feature lists with professional checkmarks
+- Prominent CTA buttons: "{ctaPrimary}"
+- Trust badges and money-back guarantee
+
+### 10. FAQ SECTION
+- 5-6 relevant Q&A pairs about {businessDescription}
+- Accordion structure with data attributes for JavaScript
+- Questions addressing {primaryGoal} concerns
+- Professional styling with smooth animations
+
+### 11. CONTACT SECTION (id="contact")
+- Contact form with validation structure
+- Company contact info: {businessEmail}, {phoneNumber}
+- Professional form design with proper spacing
+- Submit button with loading states
+
+### 12. FOOTER SECTION
+- Company information and links
+- Social media placeholders
+- Copyright and legal information
+- Professional footer design
+
+### 13. COMPLETE JAVASCRIPT FUNCTIONALITY
+Generate comprehensive vanilla JavaScript including:
+
+**MANDATORY FUNCTIONS**:
+- **initializePricingToggle()**: Handle monthly/yearly pricing toggle
+- **initializeMobileMenu()**: Handle hamburger menu functionality
+- **initializeCarousel()**: Handle testimonial carousel (0-based indexing)
+- **initializeFAQ()**: Handle accordion functionality
+- **initializeContactForm()**: Handle form validation
+- **initializeAnimations()**: Scroll animations with Intersection Observer
+
+**PRICING TOGGLE IMPLEMENTATION**:
+```javascript
+function initializePricingToggle() {
+    const monthlyToggle = document.querySelector('[data-pricing-toggle="monthly"]');
+    const yearlyToggle = document.querySelector('[data-pricing-toggle="yearly"]');
+    const monthlyPrices = document.querySelectorAll('[data-price-monthly]');
+    const yearlyPrices = document.querySelectorAll('[data-price-yearly]');
+    
+    if (!monthlyToggle || !yearlyToggle) return;
+    
+    monthlyToggle.classList.add('active');
+    yearlyPrices.forEach(price => price.classList.add('hidden'));
+    
+    monthlyToggle.addEventListener('click', () => {
+        monthlyToggle.classList.add('active');
+        yearlyToggle.classList.remove('active');
+        monthlyPrices.forEach(price => price.classList.remove('hidden'));
+        yearlyPrices.forEach(price => price.classList.add('hidden'));
+    });
+    
+    yearlyToggle.addEventListener('click', () => {
+        yearlyToggle.classList.add('active');
+        monthlyToggle.classList.remove('active');
+        yearlyPrices.forEach(price => price.classList.remove('hidden'));
+        monthlyPrices.forEach(price => price.classList.add('hidden'));
+    });
+}
+```
+
+**MOBILE MENU IMPLEMENTATION**:
+```javascript
+function initializeMobileMenu() {
+    const hamburgerBtn = document.querySelector('button[data-mobile-menu]');
+    const mobileMenu = document.querySelector('div[data-mobile-menu]');
+    
+    if (!hamburgerBtn || !mobileMenu) return;
+    
+    hamburgerBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        mobileMenu.classList.toggle('hidden');
+    });
+    
+    const menuLinks = mobileMenu.querySelectorAll('a');
+    menuLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+    });
+    
+    document.addEventListener('click', (e) => {
+        if (!hamburgerBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
+            mobileMenu.classList.add('hidden');
+        }
+    });
+}
+```
+
+**INITIALIZATION**:
+```javascript
+document.addEventListener('DOMContentLoaded', function() {
+    initializePricingToggle();
+    initializeMobileMenu();
+    initializeCarousel();
+    initializeFAQ();
+    initializeContactForm();
+    initializeAnimations();
+});
+```
+
+## DESIGN EXCELLENCE REQUIREMENTS:
+
+### VISUAL STANDARDS:
+- **Glass-morphism design** with backdrop blur and subtle shadows
+- **Gradient backgrounds** using {primaryColor} and {secondaryColor}
+- **Professional animations** with CSS keyframes and transitions
+- **Modern iconography** with SVG icons and visual hierarchy
+- **Premium typography** with proper scaling and spacing
+
+### MOBILE RESPONSIVENESS:
+- **Mobile-first approach** with breakpoint optimizations
+- **Touch-friendly elements** (minimum 44px touch targets)
+- **No white space issues** with proper container padding
+- **Perfect mobile navigation** with smooth hamburger menu
+- **Responsive pricing toggle** that works on all devices
+
+### TECHNICAL REQUIREMENTS:
+- **Pure vanilla JavaScript** (no external libraries)
+- **Tailwind CSS only** (no custom CSS except in head <style> tag)
+- **Semantic HTML5** with proper accessibility
+- **Performance optimized** with efficient animations
+- **Cross-browser compatible** with modern standards
+
+### COLOR INTEGRATION:
+- **Primary Color {primaryColor}**: Main CTAs, accents, hover states, gradients
+- **Secondary Color {secondaryColor}**: Backgrounds, borders, secondary elements
+- **Sophisticated gradients** combining both colors with opacity
+- **Consistent color psychology** throughout all sections
+
+## OUTPUT REQUIREMENTS:
+
+Generate a COMPLETE, PRODUCTION-READY HTML file that includes:
+1. ✅ Complete HTML document structure (DOCTYPE to closing HTML tag)
+2. ✅ All 12 sections in proper order with correct IDs
+3. ✅ Comprehensive CSS in head <style> tag
+4. ✅ Complete vanilla JavaScript functionality
+5. ✅ Perfect mobile responsiveness
+6. ✅ Working pricing toggle and mobile menu
+7. ✅ Professional design worthy of top SaaS companies
+
+This should be a landing page that immediately communicates professionalism, trustworthiness, and innovation - something that would make designers and developers envious while converting visitors into customers!
+
+Create something absolutely STUNNING that leverages Claude Sonnet 4's full potential! 🚀 

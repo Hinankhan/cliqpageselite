@@ -3,6 +3,9 @@ const path = require('path');
 const cors = require('cors');
 const compression = require('compression');
 
+// Import Elite Single-Gen API (new primary system)
+const EliteSingleGenerator = require('./elite-single-gen-api');
+
 console.log('🚀 Starting CliqPages server...');
 console.log('📍 Node.js version:', process.version);
 console.log('🌍 Environment:', process.env.NODE_ENV || 'development');
@@ -142,9 +145,9 @@ async function generateLandingPage(formData, sessionId = null) {
   
   let result;
   
-  // PRIORITY 1: Use Elite Multi-Gen (section-by-section) if API key available
+  // PRIORITY 1: Use Elite Single-Prompt (complete page) if API key available
   if (process.env.ANTHROPIC_API_KEY) {
-    console.log('🚀 Using ELITE MULTI-GEN (section-by-section generation)');
+    console.log('🚀 Using ELITE SINGLE-PROMPT (complete page generation with Claude Sonnet 4)');
     
     // Transform form data to elite format
     const eliteInput = {
@@ -166,51 +169,74 @@ async function generateLandingPage(formData, sessionId = null) {
       if (sessionId) {
         sendProgressUpdate(sessionId, {
           type: 'progress',
-          stage: 'starting_sections',
-          message: 'Starting section-by-section generation...',
+          stage: 'starting_generation',
+          message: 'Starting elite single-prompt generation...',
           percentage: 10,
-          icon: '🏗️'
+          icon: '🎯'
         });
       }
       
-      const eliteGen = require('./elite-multi-gen-api');
+      const eliteSingleGen = new EliteSingleGenerator();
       
-      // Send immediate test progress update
+      // Register progress callback for real-time updates
       if (sessionId) {
-        console.log(`🧪 Sending test progress update to session: ${sessionId}`);
-        sendProgressUpdate(sessionId, {
-          type: 'progress',
-          stage: 'test',
-          message: 'Testing progress connection...',
-          percentage: 5,
-          currentSection: 'Connection Test',
-          icon: '🧪'
-        });
-      }
-      
-      result = await eliteGen.generateWithProgress(eliteInput, (progress, message, sectionName) => {
-        console.log(`📊 Elite Progress Callback: ${progress}% - ${message} (Section: ${sectionName})`);
-        
-        // Send real-time progress updates
-        if (sessionId) {
+        eliteSingleGen.registerProgressCallback(sessionId, (progressData) => {
+          console.log(`📊 Elite Single Progress: ${progressData.progress}% - ${progressData.message}`);
+          
           sendProgressUpdate(sessionId, {
             type: 'progress',
-            stage: 'generating_section',
-            message: message,
-            percentage: Math.round(progress),
-            currentSection: sectionName,
-            icon: progress < 90 ? '⚡' : '🎨'
+            stage: 'generating_page',
+            message: progressData.message,
+            percentage: Math.round(progressData.progress),
+            currentSection: progressData.section || 'Generation',
+            icon: progressData.progress < 90 ? '⚡' : '🎨'
           });
-        }
-      });
+        });
+      }
+      
+      // Generate the complete landing page
+      result = await eliteSingleGen.generateLandingPage(eliteInput, sessionId);
+      
+      // Clean up progress callback
+      eliteSingleGen.cleanup(sessionId);
       
       if (result.success) {
-        result.message = `Landing page generated using ELITE multi-section approach. ${result.sectionsGenerated?.length || 'Multiple'} sections created.`;
+        result.message = `Landing page generated using ELITE single-prompt approach with Claude Sonnet 4. Complete page created in one request.`;
         result.isElite = true;
+        result.approach = 'single-prompt';
       }
     } catch (error) {
-      console.error('❌ Elite generation failed, falling back to single-prompt method:', error);
-      result = await generateWithClaude(formData);
+      console.error('❌ Elite single-prompt generation failed, falling back to multi-section method:', error);
+      
+      // FALLBACK: Use Elite Multi-Gen (section-by-section) if single-prompt fails
+      try {
+        console.log('🔄 Falling back to ELITE MULTI-GEN (section-by-section generation)');
+        const eliteGen = require('./elite-multi-gen-api');
+        
+        result = await eliteGen.generateWithProgress(eliteInput, (progress, message, sectionName) => {
+          console.log(`📊 Elite Fallback Progress: ${progress}% - ${message} (Section: ${sectionName})`);
+          
+          if (sessionId) {
+            sendProgressUpdate(sessionId, {
+              type: 'progress',
+              stage: 'generating_section_fallback',
+              message: `Fallback: ${message}`,
+              percentage: Math.round(progress),
+              currentSection: sectionName,
+              icon: progress < 90 ? '🔄' : '🎨'
+            });
+          }
+        });
+        
+        if (result.success) {
+          result.message = `Landing page generated using ELITE multi-section fallback approach. ${result.sectionsGenerated?.length || 'Multiple'} sections created.`;
+          result.isElite = true;
+          result.approach = 'multi-section-fallback';
+        }
+      } catch (fallbackError) {
+        console.error('❌ Elite multi-section fallback also failed:', fallbackError);
+        result = await generateWithClaude(formData);
+      }
     }
   } else if (aiProvider === 'openai' && process.env.OPENAI_API_KEY) {
     result = await generateWithOpenAI(formData);
