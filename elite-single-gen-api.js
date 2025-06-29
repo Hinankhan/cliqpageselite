@@ -207,6 +207,8 @@ class EliteSingleGenerator {
             return {
                 success: true,
                 filename: filename,
+                fileName: filename, // For compatibility with email system
+                htmlContent: landingPageHtml, // For email attachment
                 message: 'Elite landing page generated successfully using single-prompt approach',
                 generationTime: Date.now() - timestamp,
                 approach: 'single-prompt',

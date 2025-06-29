@@ -90,12 +90,12 @@ async function sendEmailNotification(formData, result) {
       to: [formData.email],
       subject: `🎉 Your ${formData.businessName || 'Business'} Landing Page is Ready!`,
       html: emailHtml,
-      attachments: [
+      attachments: result.htmlContent ? [
         {
-          filename: result.fileName,
+          filename: result.fileName || result.filename,
           content: Buffer.from(result.htmlContent).toString('base64'),
         },
-      ],
+      ] : [],
     });
 
     console.log('✅ Email sent successfully to:', formData.email);
@@ -857,23 +857,12 @@ app.post('/api/claude', async (req, res) => {
 });
 
 app.post('/api/generate-landing-page', async (req, res) => {
-  // Set extended response timeout for section-by-section generation
-  res.setTimeout(720000); // 12 minutes for full generation
-  
-  // Set keep-alive headers to prevent gateway timeout
-  res.setHeader('Connection', 'keep-alive');
-  res.setHeader('Keep-Alive', 'timeout=720, max=1');
-  
   try {
     console.log('📝 Landing page generation requested');
     console.log('🔍 Request body keys:', Object.keys(req.body));
-    console.log('🔍 Memory usage before:', process.memoryUsage().heapUsed / 1024 / 1024, 'MB');
     
     // Generate or use provided session ID for progress tracking
     const sessionId = req.body.sessionId || Date.now().toString();
-    
-    // Track request start time for Railway timeout management
-    const requestStartTime = Date.now();
     
     // Validate required fields
     if (!req.body.email) {
@@ -884,90 +873,62 @@ app.post('/api/generate-landing-page', async (req, res) => {
       });
     }
 
-    // Add timeout wrapper for section-by-section generation (increased for 13 sections + assembly)
-    const timeoutPromise = new Promise((_, reject) => {
-      setTimeout(() => reject(new Error('Generation timeout after 600 seconds')), 600000); // 10 minutes for 13 sections
+    // Return immediately with session ID for progress tracking
+    res.status(202).json({
+      success: true,
+      message: 'Generation started successfully',
+      sessionId: sessionId,
+      timestamp: new Date().toISOString()
     });
     
-    // Pass sessionId to generation function for progress tracking
-    const generationPromise = generateLandingPage(req.body, sessionId);
+    console.log(`📤 Immediate response sent for session: ${sessionId}`);
     
-    const result = await Promise.race([generationPromise, timeoutPromise]);
-    
-    console.log('✅ Landing page generated successfully');
-    console.log('🔍 Memory usage after:', process.memoryUsage().heapUsed / 1024 / 1024, 'MB');
-    console.log('🔍 HTML content length:', result.htmlContent?.length || 0, 'characters');
-    
-    // Prepare response
-    const responseData = {
-      success: result.success,
-      message: result.message,
-      fileName: result.fileName,
-      businessName: req.body.businessName,
-      isDemo: result.isDemo || false,
-      htmlContent: result.htmlContent,
-      timestamp: new Date().toISOString()
-    };
-    
-    // Log response size
-    const responseSize = JSON.stringify(responseData).length;
-    console.log('🔍 Response size:', responseSize, 'bytes', '(', Math.round(responseSize / 1024), 'KB)');
-    
-    // Check if response is too large (Railway limit ~1MB)
-    if (responseSize > 800000) { // 800KB threshold
-      console.warn('⚠️ Large response detected, compressing HTML content');
-      // Keep essential data but compress HTML
-      responseData.htmlContent = result.htmlContent; // Let compression middleware handle it
-      responseData.contentSize = result.htmlContent?.length || 0;
-    }
-    
-    // Send response with proper headers
-    res.setHeader('Content-Type', 'application/json');
-    res.setHeader('Cache-Control', 'no-cache');
-    res.status(200).json(responseData);
-    
-    console.log('📤 Response sent successfully');
+    // Start generation asynchronously (non-blocking)
+    generateLandingPageAsync(req.body, sessionId);
     
   } catch (error) {
     console.error('❌ API Error:', error.message);
-    console.error('🔍 Error type:', error.constructor.name);
-    console.error('🔍 Memory usage on error:', process.memoryUsage().heapUsed / 1024 / 1024, 'MB');
     
-    // Ensure response hasn't been sent already
-    if (res.headersSent) {
-      console.error('❌ Headers already sent, cannot send error response');
-      return;
-    }
-    
-    // Handle specific error types
-    if (error.message?.includes('overloaded') || error.status === 529) {
-      res.status(503).json({
-        error: 'Service temporarily overloaded',
-        message: 'Claude AI is temporarily overloaded. Please try again in a few minutes.',
-        timestamp: new Date().toISOString(),
-        retryAfter: 60
-      });
-    } else if (error.message?.includes('timeout') || error.message?.includes('Generation timeout')) {
-      res.status(504).json({
-        error: 'Request timeout',
-        message: 'The request took too long to process. Please try again.',
-        timestamp: new Date().toISOString()
-      });
-    } else if (error.status === 400) {
-      res.status(400).json({
-        error: 'Bad request',
-        message: error.message || 'Invalid request parameters',
-        timestamp: new Date().toISOString()
-      });
-    } else {
-      res.status(500).json({
-        error: 'Internal server error',
-        message: error.message || 'An unexpected error occurred',
-        timestamp: new Date().toISOString()
-      });
-    }
+    res.status(500).json({
+      error: 'Internal server error',
+      message: error.message || 'An unexpected error occurred',
+      timestamp: new Date().toISOString()
+    });
   }
 });
+
+// Async generation function that doesn't block the API response
+async function generateLandingPageAsync(formData, sessionId) {
+  try {
+    console.log(`🚀 Starting async generation for session: ${sessionId}`);
+    
+    const result = await generateLandingPage(formData, sessionId);
+    
+    console.log(`✅ Async generation completed for session: ${sessionId}`);
+    
+    // Send final progress update with result
+    sendProgressUpdate(sessionId, {
+      type: 'complete',
+      success: result.success,
+      message: result.message,
+      fileName: result.fileName || result.filename,
+      businessName: formData.businessName,
+      isDemo: result.isDemo || false,
+      timestamp: new Date().toISOString()
+    });
+    
+  } catch (error) {
+    console.error(`❌ Async generation failed for session ${sessionId}:`, error.message);
+    
+    // Send error progress update
+    sendProgressUpdate(sessionId, {
+      type: 'error',
+      success: false,
+      message: error.message || 'Generation failed',
+      timestamp: new Date().toISOString()
+    });
+  }
+}
 
 // NEW API ENDPOINT: Elite Landing Page Generation with Section Selection
 app.post('/api/generate-elite-landing', async (req, res) => {

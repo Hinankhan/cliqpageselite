@@ -489,6 +489,12 @@ class LandingPageBuilder {
                     
                     // Update fun facts based on progress
                     this.updateFunFact(data.percentage);
+                } else if (data.type === 'complete') {
+                    console.log('🎉 Generation completed successfully via SSE');
+                    this.handleGenerationComplete(data);
+                } else if (data.type === 'error') {
+                    console.error('❌ Generation failed via SSE:', data.message);
+                    this.showError(data.message || 'Generation failed. Please try again.');
                 } else {
                     console.log('📨 Unknown message type:', data.type, data);
                 }
@@ -588,10 +594,17 @@ class LandingPageBuilder {
                 throw new Error(errorData.message || `HTTP error! status: ${response.status}`);
             }
 
-            // Handle response
+            // Handle response - should be 202 (Accepted) for async processing
             const result = await response.json();
             
-            this.handleGenerationComplete(result);
+            if (response.status === 202) {
+                console.log('✅ Generation started successfully, waiting for completion via SSE');
+                // Generation started successfully, result will come via SSE
+                // The progress tracking is already set up and will handle the final result
+            } else {
+                // Fallback for immediate response (shouldn't happen with new system)
+                this.handleGenerationComplete(result);
+            }
 
         } catch (error) {
             console.error('Generation error:', error);
