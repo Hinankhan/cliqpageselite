@@ -139,15 +139,29 @@ class EliteSingleGenerator {
 
         // Replace the section structure in the prompt
         const sectionStructureRegex = /## COMPLETE LANDING PAGE STRUCTURE:[\s\S]*?## DESIGN EXCELLENCE REQUIREMENTS:/;
-        const newSectionStructure = `## COMPLETE LANDING PAGE STRUCTURE:\n\n${sectionsToInclude.join('\n\n')}\n\n## DESIGN EXCELLENCE REQUIREMENTS:`;
+        const newSectionStructure = `## COMPLETE LANDING PAGE STRUCTURE:
+
+**CRITICAL INSTRUCTION**: You MUST generate ONLY the sections listed below. Do NOT include any other sections not specifically listed here.
+
+${sectionsToInclude.join('\n\n')}
+
+**IMPORTANT**: The above ${sectionsToInclude.length} sections are the COMPLETE list. Do not add any additional sections like Problem, How It Works, Product Showcase, Value Props, Testimonials, or FAQ unless they are explicitly listed above.
+
+## DESIGN EXCELLENCE REQUIREMENTS:`;
         
         return prompt.replace(sectionStructureRegex, newSectionStructure);
     }
 
     // Clean Claude's response to remove unwanted text
     cleanClaudeResponse(response) {
-        // Remove common unwanted prefixes and suffixes
         let cleaned = response;
+        
+        // First, find the closing </html> tag and cut everything after it
+        const htmlEndMatch = cleaned.match(/<\/html\s*>/i);
+        if (htmlEndMatch) {
+            const htmlEndIndex = htmlEndMatch.index + htmlEndMatch[0].length;
+            cleaned = cleaned.substring(0, htmlEndIndex);
+        }
         
         // Remove common AI response prefixes
         const prefixesToRemove = [
@@ -162,33 +176,32 @@ class EliteSingleGenerator {
             cleaned = cleaned.replace(prefix, '');
         });
         
-        // Remove common AI response suffixes
-        const suffixesToRemove = [
-            /\s*```\s*$/,
-            /This landing page.*?rivals.*?companies.*$/i,
-            /The landing page.*?ready for production.*$/i,
-            /This.*?complete.*?production-ready.*$/i
-        ];
+        // Remove markdown code blocks
+        cleaned = cleaned.replace(/^```html\s*/gmi, '');
+        cleaned = cleaned.replace(/```\s*$/gm, '');
         
-        suffixesToRemove.forEach(suffix => {
-            cleaned = cleaned.replace(suffix, '');
-        });
+        // More aggressive removal of success messages and explanatory text
+        // Remove any text that appears after a pattern like "This is a complete..."
+        cleaned = cleaned.replace(/This is a complete.*[\s\S]*$/i, '');
+        cleaned = cleaned.replace(/The landing page.*[\s\S]*$/i, '');
+        cleaned = cleaned.replace(/## ✅.*[\s\S]*$/i, '');
+        cleaned = cleaned.replace(/✅.*[\s\S]*$/i, '');
         
-        // Remove any success messages at the end
-        const successMessageRegex = /[\s\S]*?(<\/html>\s*>)/i;
-        const match = cleaned.match(successMessageRegex);
-        if (match) {
-            cleaned = cleaned.substring(0, match.index + match[1].length);
+        // Find the actual HTML content
+        let htmlStartIndex = cleaned.search(/<!DOCTYPE\s+html>/i);
+        if (htmlStartIndex === -1) {
+            htmlStartIndex = cleaned.search(/<html[\s>]/i);
+            if (htmlStartIndex !== -1) {
+                cleaned = '<!DOCTYPE html>\n' + cleaned.substring(htmlStartIndex);
+            }
+        } else {
+            cleaned = cleaned.substring(htmlStartIndex);
         }
         
-        // Ensure it starts with DOCTYPE
-        if (!cleaned.trim().toLowerCase().startsWith('<!doctype')) {
-            // Try to find the DOCTYPE declaration
-            const doctypeMatch = cleaned.match(/<!DOCTYPE[^>]*>/i);
-            if (doctypeMatch) {
-                const doctypeIndex = cleaned.indexOf(doctypeMatch[0]);
-                cleaned = cleaned.substring(doctypeIndex);
-            }
+        // Final cleanup - ensure we end at </html> and nothing after
+        const finalHtmlMatch = cleaned.match(/(.*<\/html\s*>)/si);
+        if (finalHtmlMatch) {
+            cleaned = finalHtmlMatch[1];
         }
         
         return cleaned.trim();
@@ -291,6 +304,8 @@ class EliteSingleGenerator {
             console.log(`📋 Company: ${userData.company_name}`);
             console.log(`🎨 Style: ${userData.page_style}`);
             console.log(`🎯 Goal: ${userData.primary_goal}`);
+            console.log(`📋 Selected Sections:`, userData.selected_sections);
+            console.log(`📝 Custom Section:`, userData.custom_section || 'None');
 
             // Initial progress
             this.sendProgressUpdate(sessionId, 5, 'Loading elite prompt template...', 'initialization');

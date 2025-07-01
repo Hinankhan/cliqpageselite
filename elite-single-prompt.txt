@@ -36,13 +36,18 @@ Generate complete HTML5 structure with:
 
 ### 2. ELITE HERO SECTION
 Create a stunning hero section with:
-- **Glass-morphism navigation** with company name and smooth mobile hamburger menu
-- **Navigation links**: #problem, #how-it-works, #features, #product-showcase, #value-props, #pricing, #contact
+- **Glass-morphism navigation** with company name and responsive menu system
+- **DESKTOP NAVIGATION REQUIREMENTS**:
+  - Horizontal navigation links VISIBLE on desktop screens (lg:flex)
+  - Navigation links should match the selected sections only
+  - Clean, modern styling with hover effects
+  - Always visible on screens 1024px and above
 - **MOBILE MENU REQUIREMENTS**:
-  - Hamburger button with `data-mobile-menu` attribute
-  - Mobile dropdown with `data-mobile-menu` attribute (hidden by default)
+  - Hamburger button with `data-mobile-menu` attribute (visible only on mobile)
+  - Mobile dropdown with `data-mobile-menu` attribute (hidden by default, lg:hidden)
   - Vertical menu items with proper spacing (py-3 px-4)
   - Professional styling with hover effects
+- **CRITICAL**: Desktop navigation must be visible by default, mobile menu only shows on small screens
 - **Hero Content**:
   - Compelling headline with gradient text effects
   - Clear value proposition for {targetMarket}
@@ -253,5 +258,7 @@ Generate a COMPLETE, PRODUCTION-READY HTML file that includes:
 This should be a landing page that immediately communicates professionalism, trustworthiness, and innovation - something that would make designers and developers envious while converting visitors into customers!
 
 **IMPORTANT**: Pay special attention to any custom instructions provided above. Integrate these requirements seamlessly into the design while maintaining the overall professional quality and structure.
+
+**SECTION COMPLIANCE REMINDER**: You MUST follow the section structure exactly as specified above. Do NOT add extra sections beyond what is listed in the "COMPLETE LANDING PAGE STRUCTURE". Each section you generate must match the numbered list provided.
 
 Create something absolutely STUNNING that leverages Claude Sonnet 4's full potential! 🚀 
