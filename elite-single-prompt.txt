@@ -14,6 +14,7 @@ You are an ELITE LANDING PAGE ARCHITECT tasked with creating a WORLD-CLASS, COMP
 - Secondary CTA: {ctaSecondary}
 - Contact: {businessEmail}, {phoneNumber}
 - Website: {websiteUrl}
+- Special Instructions: {customInstructions}
 
 ## COMPLETE LANDING PAGE STRUCTURE:
 
@@ -246,6 +247,11 @@ Generate a COMPLETE, PRODUCTION-READY HTML file that includes:
 6. ✅ Working pricing toggle and mobile menu
 7. ✅ Professional design worthy of top SaaS companies
 
+## SPECIAL DESIGN REQUIREMENTS:
+{customInstructions}
+
 This should be a landing page that immediately communicates professionalism, trustworthiness, and innovation - something that would make designers and developers envious while converting visitors into customers!
+
+**IMPORTANT**: Pay special attention to any custom instructions provided above. Integrate these requirements seamlessly into the design while maintaining the overall professional quality and structure.
 
 Create something absolutely STUNNING that leverages Claude Sonnet 4's full potential! 🚀 

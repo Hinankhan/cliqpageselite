@@ -19,6 +19,7 @@ class LandingPageBuilder {
         this.setupValidation();
         this.setupColorSyncers();
         this.setupFloatingLabels();
+        this.setupSectionSelection();
     }
 
     setupValidation() {
@@ -242,6 +243,7 @@ class LandingPageBuilder {
 
     getFormData() {
         const pageStyleElement = document.querySelector('input[name="pageStyle"]:checked');
+        const selectedSections = this.getSelectedSections();
         
         return {
             email: document.getElementById('email').value.trim(),
@@ -256,6 +258,8 @@ class LandingPageBuilder {
             primaryColor: document.getElementById('primaryColor').value,
             secondaryColor: document.getElementById('secondaryColor').value,
             customInstructions: document.getElementById('customInstructions').value.trim(),
+            selectedSections: selectedSections,
+            customSection: document.getElementById('customSection').value.trim(),
             
             // Map to backend expected field names
             businessName: document.getElementById('companyName').value.trim(),
@@ -269,6 +273,8 @@ class LandingPageBuilder {
             business_email: document.getElementById('businessEmail').value.trim(),
             phone_number: document.getElementById('phoneNumber').value.trim(),
             website_url: document.getElementById('websiteUrl').value.trim(),
+            selected_sections: selectedSections,
+            custom_section: document.getElementById('customSection').value.trim(),
         };
     }
 
@@ -613,14 +619,28 @@ class LandingPageBuilder {
     }
 
     handleGenerationComplete(result) {
-        // Hide progress section
-        this.progressSection.classList.add('hidden');
+        this.stopPolling();
         
-        if (result.success) {
-            this.showResults(result);
-        } else {
-            this.showError(result.message || 'Generation failed. Please try again.');
+        // Close SSE connection
+        if (this.eventSource) {
+            this.eventSource.close();
+            this.eventSource = null;
         }
+        
+        // Final progress update to show completion
+        this.updateProgressUI(100, 'Landing page generation complete!', '🎉', 'Complete');
+        
+        // Wait a moment to show completion, then transition to results
+        setTimeout(() => {
+            // Hide progress section
+            this.progressSection.classList.add('hidden');
+            
+            if (result.success) {
+                this.showResults(result);
+            } else {
+                this.showError(result.message || 'Generation failed. Please try again.');
+            }
+        }, 2000); // Give 2 seconds to show completion
     }
 
     showResults(result) {
@@ -666,6 +686,13 @@ class LandingPageBuilder {
                 document.getElementById('primaryColorHex').value = '#6366f1';
                 document.getElementById('secondaryColor').value = '#10b981';
                 document.getElementById('secondaryColorHex').value = '#10b981';
+                
+                // Reset section selections to all checked
+                const sectionCheckboxes = document.querySelectorAll('input[name="sections[]"]');
+                sectionCheckboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+                this.updateSectionStyles();
                 
                 // Clear any validation errors
                 this.clearAllErrors();
@@ -782,6 +809,87 @@ class LandingPageBuilder {
         errorInputs.forEach(input => {
             input.classList.remove('input-error', 'field-error');
         });
+    }
+
+    setupSectionSelection() {
+        // Setup section selection buttons
+        const selectAllBtn = document.getElementById('selectAllSections');
+        const selectEssentialBtn = document.getElementById('selectEssentialSections');
+        const clearAllBtn = document.getElementById('clearAllSections');
+        
+        if (selectAllBtn) {
+            selectAllBtn.addEventListener('click', () => {
+                const checkboxes = document.querySelectorAll('input[name="sections[]"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+                this.updateSectionStyles();
+            });
+        }
+        
+        if (selectEssentialBtn) {
+            selectEssentialBtn.addEventListener('click', () => {
+                const essentialSections = ['hero', 'features', 'pricing', 'contact', 'footer'];
+                const checkboxes = document.querySelectorAll('input[name="sections[]"]');
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = essentialSections.includes(checkbox.value);
+                });
+                this.updateSectionStyles();
+            });
+        }
+        
+        if (clearAllBtn) {
+            clearAllBtn.addEventListener('click', () => {
+                const checkboxes = document.querySelectorAll('input[name="sections[]"]');
+                const requiredSections = ['hero', 'contact', 'footer'];
+                checkboxes.forEach(checkbox => {
+                    checkbox.checked = requiredSections.includes(checkbox.value);
+                });
+                this.updateSectionStyles();
+            });
+        }
+        
+        // Add change listeners to section checkboxes
+        const sectionCheckboxes = document.querySelectorAll('input[name="sections[]"]');
+        sectionCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                this.handleSectionChange(checkbox);
+                this.updateSectionStyles();
+            });
+        });
+        
+        // Initial style update
+        this.updateSectionStyles();
+    }
+    
+    handleSectionChange(checkbox) {
+        const requiredSections = ['hero', 'contact', 'footer'];
+        
+        // Prevent unchecking required sections
+        if (requiredSections.includes(checkbox.value) && !checkbox.checked) {
+            checkbox.checked = true;
+            this.showToast('This section is required and cannot be removed.', 'warning');
+            return;
+        }
+    }
+    
+    updateSectionStyles() {
+        const sectionOptions = document.querySelectorAll('.section-option');
+        sectionOptions.forEach(option => {
+            const checkbox = option.querySelector('input[type="checkbox"]');
+            if (checkbox.checked) {
+                option.classList.add('border-indigo-300', 'bg-indigo-50');
+                option.classList.remove('border-gray-300');
+            } else {
+                option.classList.add('border-gray-300');
+                option.classList.remove('border-indigo-300', 'bg-indigo-50');
+            }
+        });
+    }
+
+    getSelectedSections() {
+        const checkboxes = document.querySelectorAll('input[name="sections[]"]:checked');
+        return Array.from(checkboxes).map(checkbox => checkbox.value);
     }
 }
 
